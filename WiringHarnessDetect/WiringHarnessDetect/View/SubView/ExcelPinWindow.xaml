@@ -1,0 +1,75 @@
+﻿<pu:WindowX x:Class="WiringHarnessDetect.View.SubView.ExcelPinWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WiringHarnessDetect.View.SubView"
+         xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
+      ResizeMode="NoResize" WindowStartupLocation="CenterScreen"
+            pu:WindowXCaption.Height="30"  DataContext="{Binding Source={StaticResource Locator},Path=ExcelPaper.Pin}"
+            pu:WindowXCaption.Foreground="White" 
+            FontSize="18" FontFamily="楷体"
+            pu:WindowX.Background="#0375B1" 
+        Title="标记治具" Height="200" Width="250">
+    <Grid Background="#EDEEF2" Name="grid">
+        <Grid.Resources>
+
+            <Style TargetType="TextBlock" >
+                <Setter Property="FontFamily" Value="楷体"/>
+                <Setter Property="FontSize" Value="15"/>
+                <Setter Property="Foreground" Value="Black"/>
+
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="HorizontalAlignment" Value="Right"/>
+                <Setter Property="FontWeight" Value="DemiBold"/>
+
+            </Style>
+            <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+                <Setter Property="pu:TextBoxHelper.CornerRadius" Value="2"/>
+                <Setter Property="pu:TextBoxHelper.FocusedBorderBrush" Value="DarkGray"/>
+                <Setter Property="HorizontalAlignment" Value="Left"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="Height" Value="28"/>
+                <Setter Property="Width" Value="150"/>
+                <Setter Property="FontSize" Value="15"/>
+                <EventSetter Event="KeyDown" Handler="TextBox_KeyDown"/>
+            </Style>
+
+            <Style TargetType="Button"   BasedOn="{StaticResource {x:Type Button}}">
+
+                <Setter Property="Background" Value="#45B8EE"/>
+                <Setter Property="pu:ButtonHelper.CornerRadius" Value="5"/>
+                <Setter Property="Width" Value="130"/>
+                <Setter Property="Height" Value="35"/>
+                <Setter Property="pu:ButtonHelper.HoverBrush" Value="DarkGray"/>
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="pu:ButtonHelper.ButtonStyle" Value="Standard"/>
+                <EventSetter  Event="Click" Handler="Button_Click"/>
+            </Style>
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="30*"/>
+            <ColumnDefinition Width="70*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="治具编号:"/>
+        <TextBox  Name="cmbfixture" Grid.Row="0" Grid.Column="1" Width="150" Height="25" 
+                  HorizontalAlignment="Left"  IsReadOnly="True" Text="{Binding Source={StaticResource Locator},Path=ExcelPaper.Fixture.FixtureType}"/>
+        <TextBlock Text="标记编号:" Grid.Row="1"  />
+        <TextBox Name="codepart" Grid.Column="1" Grid.Row="1" Text="{Binding Source={StaticResource Locator},Path=ExcelPaper.Pin.PinNO,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  />
+        <TextBlock Text="物理地址:" Grid.Row="2"  />
+        <TextBox Name="address" Grid.Column="1" Grid.Row="2" Text="{Binding Source={StaticResource Locator},Path=ExcelPaper.Pin.PhysicalChannel,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  />
+        <DockPanel Grid.Column="1" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <DockPanel Grid.ColumnSpan="2" Grid.Row="5" Grid.RowSpan="2">
+            <Button Content="确定" Margin="30,5,0,0" Tag="confirm" />
+        </DockPanel>
+    </Grid>
+</pu:WindowX>

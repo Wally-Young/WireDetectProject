@@ -1,0 +1,72 @@
+﻿<pu:WindowX
+    xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
+    x:Class="WiringHarnessDetect.View.CodeWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WiringHarnessDetect.View"
+        mc:Ignorable="d" 
+     WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize" 
+            WindowStyle="ToolWindow"
+           
+            pu:WindowXCaption.Height="20" 
+            pu:WindowXCaption.Foreground="White" 
+            FontSize="14" FontFamily="楷体"
+            pu:WindowX.Background="#0375B1" 
+        Title="引脚编辑" Height="160" Width="200">
+    
+    <Grid Background="#EDEEF2" DataContext="{Binding Source={StaticResource Locator},Path=Paper.Pin}"  >
+        <StackPanel>
+            <StackPanel.Resources>
+                <Style TargetType="DockPanel">
+                    <Setter Property="Margin" Value="0,6,0,0"/>
+                </Style>
+                <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+                    <Setter Property="pu:TextBoxHelper.CornerRadius" Value="4"/>
+                    <Setter Property="Width" Value="115"/>
+                    <Setter Property="HorizontalAlignment" Value="Left"/>
+                </Style>
+                <Style TargetType="TextBlock">
+                    <Setter Property="FontWeight" Value="DemiBold"/>
+                    <Setter Property="Width" Value="70"/>
+                    <Setter Property="Margin" Value="4,0,0,0"/>
+                    <Setter Property="Height" Value="25"/>
+                </Style>
+                <local:BoolConverterToInt x:Key="IntToBoolConverter"></local:BoolConverterToInt>
+            </StackPanel.Resources>
+            <DockPanel>
+                <TextBlock Text="编  号:" />
+                <TextBox   Text="{Binding PinCode}"/>
+            </DockPanel>
+            <DockPanel>
+                <TextBlock Text="物理地址:" />
+                <TextBox Grid.Column="1" Text="{Binding PhysicalChannel}"/>
+            </DockPanel>
+            <DockPanel x:Name="type"  >
+                <TextBlock Text="类  型:" Grid.Row="2"/>
+                <CheckBox Grid.Row="2" Grid.Column="1"  IsChecked="{Binding IsSafeBox}" Checked="CheckBox_Checked"  Unchecked="CheckBox_Unchecked">继电器</CheckBox>
+            </DockPanel>
+            <DockPanel x:Name="phy" Visibility="Collapsed" >
+                <TextBlock x:Name="phylb"   Text="元器件名称:" />
+                <TextBox   x:Name="phytxt"   Grid.Column="1"  Text="{Binding SafeBoxName}"/>
+            </DockPanel>
+            <DockPanel  x:Name="contr" Visibility="Collapsed" >
+                <TextBlock x:Name="contrlb"  Text="控制通道:"  />
+                <TextBox  x:Name="contrtxt"  Grid.Column="1"  Text="{Binding RelayControlChannel}"/>
+            </DockPanel>
+            <Button  x:Name="btn" pu:ButtonHelper.CornerRadius="5"
+                     
+                     Background="#3385FF" Margin="0,5,0,0"
+                     Width="120" Content="确定" Height="30" 
+                     Tag="confirm"  Click="Btn_Click" />
+        </StackPanel> 
+      
+        
+        
+      
+        
+        
+    </Grid>
+</pu:WindowX>

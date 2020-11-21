@@ -1,0 +1,55 @@
+﻿<Window x:Class="WiringHarnessDetect.MultiMessageBox"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WiringHarnessDetect"
+        xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
+        mc:Ignorable="d"
+        Title="ConfirmWindow" WindowChrome.WindowChrome="{DynamicResource WindowChromeKey}" Height="288" Width="440" FontFamily="微软雅黑"  WindowStyle="None"
+        WindowStartupLocation="CenterScreen" Background="Transparent" Opacity="70">
+    <Window.Resources>
+        <WindowChrome x:Key="WindowChromeKey">
+            <WindowChrome.ResizeBorderThickness>
+                <Thickness>0</Thickness>
+            </WindowChrome.ResizeBorderThickness>
+        </WindowChrome>
+    </Window.Resources>
+
+    <Grid Background="Transparent" Margin="0">
+        <Border CornerRadius="2,2,2,2"  Background="#1D2340" Margin="0">
+            <Grid >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="48" />
+                    <RowDefinition Height="240"/>
+                </Grid.RowDefinitions>
+                <!--标题栏-->
+                <Border CornerRadius="2" Background="#4976FB" Margin="0" Grid.Row="0"  >
+                    <Grid >
+                        <Label x:Name="titlelb"   Foreground="White" FontSize="16"  Margin="20,0,0,0"  HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        <Button x:Name="FrmCloseBtn" Click="FrmCloseBtn_Click"  BorderThickness="0" Background="Transparent" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,20,0" >
+                            <Image Source="/Image/popup_close.png" Stretch="Fill" Height="16" Width="16" />
+                        </Button>
+                    </Grid>
+
+                </Border>
+
+                <DockPanel Grid.Row="1" HorizontalAlignment="Center"  Grid.Column="1">
+                    <!--图标-->
+                    <Image x:Name="tipico" Source="/Image/question.png" Grid.Row="1" Height="60" Width="60"  Margin="0,40,0,0" DockPanel.Dock="Top"/>
+                    <!--提示信息-->
+                    <Label  x:Name="tipMessage"  Foreground="#B9C6F2" FontSize="16" Grid.Row="1" Margin="0,16,0,0" DockPanel.Dock="Top" HorizontalContentAlignment="Center"/>
+
+                    <Button  x:Name="Confirm" FontSize="14"   Height="40" Width="100" Margin="0,0,10,20" Click="Confirm_Click" Content="确认" Background="#4A78FF" Foreground="#F3F3F3"  Opacity="100"  VerticalAlignment="Bottom" />
+                  <Button x:Name="CanCel" FontSize="14"  Height="40" Width="100" Margin="0,0,0,20" Click="CanCel_Click" Background="Transparent" Content="取消" Foreground="#F3F3F3" BorderThickness="2" BorderBrush="#4A78FF"   Opacity="100"  VerticalAlignment="Bottom"  />
+                </DockPanel>
+
+            </Grid>
+        </Border>
+    </Grid>
+
+
+
+
+
+</Window>

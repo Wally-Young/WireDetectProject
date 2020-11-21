@@ -1,0 +1,505 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\EntityFramework.6.3.0\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.3.0\build\EntityFramework.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E6FF0CC6-A2D2-4F44-9466-F6587B99F3F2}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>WiringHarnessDetect</RootNamespace>
+    <AssemblyName>WiringHarnessDetect</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="BouncyCastle.Crypto, Version=1.8.6.0, Culture=neutral, PublicKeyToken=0e99375e54769942, processorArchitecture=MSIL">
+      <HintPath>..\packages\Portable.BouncyCastle.1.8.6\lib\net40\BouncyCastle.Crypto.dll</HintPath>
+    </Reference>
+    <Reference Include="CommonServiceLocator, Version=2.0.2.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommonServiceLocator.2.0.2\lib\net45\CommonServiceLocator.dll</HintPath>
+    </Reference>
+    <Reference Include="Dapper, Version=1.12.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.1.12\lib\net40\Dapper.dll</HintPath>
+    </Reference>
+    <Reference Include="DapperExtensions, Version=1.6.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DapperExtensions.1.6.3\lib\net45\DapperExtensions.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.3.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.3.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight, Version=5.4.1.0, Culture=neutral, PublicKeyToken=e7570ab207bcb616, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvvmLightLibs.5.4.1.1\lib\net45\GalaSoft.MvvmLight.dll</HintPath>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight.Extras, Version=5.4.1.0, Culture=neutral, PublicKeyToken=669f0b5e8f868abf, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvvmLightLibs.5.4.1.1\lib\net45\GalaSoft.MvvmLight.Extras.dll</HintPath>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight.Platform, Version=5.4.1.0, Culture=neutral, PublicKeyToken=5f873c45e98af8a1, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvvmLightLibs.5.4.1.1\lib\net45\GalaSoft.MvvmLight.Platform.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=1.2.0.246, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpZipLib.1.2.0\lib\net45\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI, Version=2.5.1.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\NPOI.2.5.1\lib\net45\NPOI.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OOXML, Version=2.5.1.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\NPOI.2.5.1\lib\net45\NPOI.OOXML.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OpenXml4Net, Version=2.5.1.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\NPOI.2.5.1\lib\net45\NPOI.OpenXml4Net.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OpenXmlFormats, Version=2.5.1.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\NPOI.2.5.1\lib\net45\NPOI.OpenXmlFormats.dll</HintPath>
+    </Reference>
+    <Reference Include="Panuon.UI.Silver, Version=1.1.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>D:\下载\PanuonUI.Silver-master (2)\PanuonUI.Silver-master\Net45\Panuon.UI.Silver\bin\Debug\Panuon.UI.Silver.dll</HintPath>
+    </Reference>
+    <Reference Include="ReachFramework" />
+    <Reference Include="SimpleTcp, Version=2.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SuperSimpleTcp.2.0.5\lib\net461\SimpleTcp.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.SQLite, Version=1.0.113.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.113.3\lib\net46\System.Data.SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.SQLite.EF6, Version=1.0.113.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Data.SQLite.EF6.1.0.113.0\lib\net46\System.Data.SQLite.EF6.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.SQLite.Linq, Version=1.0.113.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Data.SQLite.Linq.1.0.113.0\lib\net46\System.Data.SQLite.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Printing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvvmLightLibs.5.4.1.1\lib\net45\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="tsclibnet">
+      <HintPath>E:\Personal\项目\线束检测\标签打印机\tsclibnet.dll</HintPath>
+    </Reference>
+    <Reference Include="UIAutomationProvider" />
+    <Reference Include="UIAutomationTypes" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="Common\ExcelHelper.cs" />
+    <Compile Include="Common\SQliteDbContext.cs" />
+    <Compile Include="Common\TSCLIB_DLL.cs" />
+    <Compile Include="Common\ValidateModelBase.cs" />
+    <Compile Include="Common\WindowOperation.cs" />
+    <Compile Include="Model\ExcelModel\LabelInfo.cs" />
+    <Compile Include="Model\NormalModel\AddressInfo.cs" />
+    <Compile Include="Model\ExcelModel\ConnectionInfo.cs" />
+    <Compile Include="Model\ExcelModel\CarProject.cs" />
+    <Compile Include="Common\Convert.cs" />
+    <Compile Include="Model\NormalModel\CablePaper.cs" />
+    <Compile Include="Model\ExcelModel\ExcelPin.cs" />
+    <Compile Include="Model\ExcelModel\ExcelProject.cs" />
+    <Compile Include="Model\NormalModel\Fixture.cs" />
+    <Compile Include="Model\ExcelModel\FixtureBase.cs" />
+    <Compile Include="Model\NormalModel\JKSampleData.cs" />
+    <Compile Include="Model\ExcelModel\Part.cs" />
+    <Compile Include="Model\NormalModel\PassiveLearningData.cs" />
+    <Compile Include="Model\NormalModel\Pin.cs" />
+    <Compile Include="Model\NormalModel\Project.cs" />
+    <Compile Include="Model\User.cs" />
+    <Compile Include="Model\ExcelModel\WireType.cs" />
+    <Compile Include="ViewModel\ActiveViewModel.cs" />
+    <Compile Include="ViewModel\BindDataAnnotationsViewModel.cs" />
+    <Compile Include="ViewModel\ExcelManagerViewModel.cs" />
+    <Compile Include="ViewModel\ExPassiveDetectViewModel.cs" />
+    <Compile Include="ViewModel\LoginViewModel.cs" />
+    <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\PaperManagerViewModel.cs" />
+    <Compile Include="ViewModel\ParameterViewModel.cs" />
+    <Compile Include="ViewModel\PassiveViewModel.cs" />
+    <Compile Include="ViewModel\UserManagerViewModel.cs" />
+    <Compile Include="ViewModel\ViewModelLocator.cs" />
+    <Compile Include="View\ExcelDetectView.xaml.cs">
+      <DependentUpon>ExcelDetectView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ExcelManagerView.xaml.cs">
+      <DependentUpon>ExcelManagerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SubView\CarTypeWindow.xaml.cs">
+      <DependentUpon>CarTypeWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SubView\ExcelPinWindow.xaml.cs">
+      <DependentUpon>ExcelPinWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SubView\ExcelProjectWindow.xaml.cs">
+      <DependentUpon>ExcelProjectWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SubView\FixtureImageWindow.xaml.cs">
+      <DependentUpon>FixtureImageWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SubView\PinWindow.xaml.cs">
+      <DependentUpon>PinWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\LoginView.xaml.cs">
+      <DependentUpon>LoginView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\MultiMessageBox.xaml.cs">
+      <DependentUpon>MultiMessageBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SubView\PaperWindow.xaml.cs">
+      <DependentUpon>PaperWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\PaperManagerView.xaml.cs">
+      <DependentUpon>PaperManagerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ActiveView.xaml.cs">
+      <DependentUpon>ActiveView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ParameterView.xaml.cs">
+      <DependentUpon>ParameterView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\PassiveView.xaml.cs">
+      <DependentUpon>PassiveView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SubView\ProjectWindow.xaml.cs">
+      <DependentUpon>ProjectWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SubView\WireWindow.xaml.cs">
+      <DependentUpon>WireWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UserManagerView.xaml.cs">
+      <DependentUpon>UserManagerView.xaml</DependentUpon>
+    </Compile>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="Style\TextBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\ExcelDetectView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ExcelManagerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SubView\CarTypeWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SubView\ExcelPinWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SubView\ExcelProjectWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SubView\FixtureImageWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SubView\PinWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\LoginView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\MultiMessageBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SubView\PaperWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\PaperManagerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ActiveView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\ParameterView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\PassiveView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SubView\ProjectWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SubView\WireWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UserManagerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\User.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\question.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\popup_close.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\warning.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\info.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\用户.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\home.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\logs.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\setting.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\UserManager.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\exit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\manual.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\createProject.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\ModifyProject.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\JOG+.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\JOG-.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\Back.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\reset.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\Estop.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\start.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\stop.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\User Settings.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\reset1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\play.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\pause.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\stopPlay.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\report.png" />
+    <Resource Include="Image\query.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\database.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\datablack.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\Close.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\图纸.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\管理.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\工程.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\模型列表.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\清空.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\框选.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\橡皮擦.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\魔术棒.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\create.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\线索S.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\二极管.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\方向.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\move.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\Max.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\minus.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\modify.png" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>这台计算机上缺少此项目引用的 NuGet 程序包。使用“NuGet 程序包还原”可下载这些程序包。有关更多信息，请参见 http://go.microsoft.com/fwlink/?LinkID=322105。缺少的文件是 {0}。</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\EntityFramework.6.3.0\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.3.0\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.3.0\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.3.0\build\EntityFramework.targets'))" />
+    <Error Condition="!Exists('..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.113.3\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.113.3\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets'))" />
+  </Target>
+  <Import Project="..\packages\EntityFramework.6.3.0\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.3.0\build\EntityFramework.targets')" />
+  <Import Project="..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.113.3\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets" Condition="Exists('..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.113.3\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets')" />
+</Project>

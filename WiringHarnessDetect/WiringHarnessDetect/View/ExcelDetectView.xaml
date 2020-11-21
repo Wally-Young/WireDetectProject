@@ -1,0 +1,215 @@
+﻿<Page x:Class="WiringHarnessDetect.View.ExcelDetectView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:WiringHarnessDetect.View"
+       xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
+      mc:Ignorable="d" DataContext="{Binding Source={StaticResource Locator},Path=ExcelPassive}"
+         xmlns:mvvm="http://www.galasoft.ch/mvvmlight"
+      xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+      xmlns:model="clr-namespace:WiringHarnessDetect"
+      d:DesignHeight="720" d:DesignWidth="1366"
+      Title="ExcelDetectView">
+
+    <Grid Background="White">
+        <Grid.Resources>
+            <Style TargetType="TextBlock" >
+                <Setter Property="FontFamily" Value="楷体"/>
+                <Setter Property="FontSize" Value="19"/>
+                <Setter Property="Foreground" Value="#E4F2FB"/>
+                <Setter Property="Margin" Value="10,0,0,0"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+
+            </Style>
+            <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
+                <Setter Property="Background" Value="#465773"/>
+                <Setter Property="Height" Value="45"/>
+                <Setter Property="Width" Value="195"/>
+                <Setter Property="FontSize" Value="18"/>
+
+                <Setter Property="Foreground" Value="#E4F2FB"/>
+                <Setter Property="Margin" Value="0,12,0,0"/>
+                <Setter Property="pu:ButtonHelper.CornerRadius" Value="5"/>
+                <Setter Property="FontFamily" Value="楷体"/>
+            </Style>
+            <model:ConvertLStringToColor x:Key="stringToColor"/>
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="16*"/>
+            <ColumnDefinition Width="84*"/>
+
+        </Grid.ColumnDefinitions>
+        <!--左边部分-->
+        <Grid Background="#4F6F9A">
+
+            <StackPanel DataContext="{Binding Source={StaticResource Locator},Path=Main}" >
+                <TextBlock Text="选择车型" Margin="10,5,0,0"  />
+                <ComboBox Name="cmbchart"  Height="25" pu:ComboBoxHelper.ItemHeight="25" FontSize="16"  Margin="10,5,10,0"
+                           ItemsSource="{Binding Source={StaticResource Locator},Path=Main.CarTypes}" 
+                          SelectedItem="{Binding Source={StaticResource Locator},Path=ExcelPassive.Car}"
+                           DisplayMemberPath="CarName"
+                           >
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectionChanged">
+                            <mvvm:EventToCommand Command="{Binding Source={StaticResource Locator},Path=ExcelPassive.ChangeWire}" CommandParameter="car" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </ComboBox>
+                <TextBlock Text="选择线束" Margin="5,5,0,0"/>
+                <ComboBox Name="partcmb" FontSize="16" Height="25" Margin="10,5,10,0"
+                          ItemsSource="{Binding Source={StaticResource Locator},Path=Main.WireTypes}" 
+                          DisplayMemberPath="WireName"  
+                           SelectedItem="{Binding Source={StaticResource Locator}, Path=ExcelPassive.Wire,Mode=OneWayToSource}" >
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectionChanged">
+                            <mvvm:EventToCommand Command="{Binding Source={StaticResource Locator},Path=ExcelPassive.ChangeWire}" CommandParameter="wire" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </ComboBox>
+                <TextBlock Text="选择工程" Margin="5,5,0,0"/>
+                <ComboBox Name="projectcmb" FontSize="16" Height="25" Margin="10,5,10,0"
+                          ItemsSource="{Binding Source={StaticResource Locator},Path=Main.ExProjects}" 
+                          DisplayMemberPath="ProjectName"  
+                           SelectedItem="{Binding Source={StaticResource Locator}, Path=ExcelPassive.Project,Mode=OneWayToSource}" >
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectionChanged">
+                            <mvvm:EventToCommand Command="{Binding Source={StaticResource Locator},Path=ExcelPassive.ChangeProject}" 
+                                                 PassEventArgsToCommand="True"   CommandParameter="{Binding SelectedValue, ElementName=projectcmb}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </ComboBox>
+                <TextBlock Text="零件型号" Margin="5,5,0,0"/>
+                <ComboBox Name="cmbpart" FontSize="16" Height="25" Margin="10,2,10,0"
+                          ItemsSource="{Binding Source={StaticResource Locator},Path=ExcelPassive.PartTypes}" 
+                          SelectedItem="{Binding Source={StaticResource Locator},Path=ExcelPassive.Part}"
+                          DisplayMemberPath="PartType" 
+                        >
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectionChanged">
+                            <mvvm:EventToCommand Command="{Binding Source={StaticResource Locator},Path=ExcelPassive.ChangePart}" 
+                                                 PassEventArgsToCommand="True"  
+                                                 CommandParameter="{Binding SelectedItem, ElementName=cmbpart}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </ComboBox>
+                <Button  pu:ButtonHelper.Icon="&#xf09e;" 
+                         Command="{Binding Source={StaticResource Locator},Path=Main.Connect}" 
+                         Background="{Binding Source={StaticResource Locator},Path=Main.IsConnected,Converter={StaticResource BoolToColor}}" 
+                         Content="{Binding Source={StaticResource Locator},Path=Main.IsConnected,Converter={StaticResource BoolToText}}"  
+                         />
+                
+                <Button Content="开始测量" pu:ButtonHelper.Icon="&#xf144;"
+                        IsEnabled="{Binding Source={StaticResource Locator},Path=Main.IsConnected}"
+                        Command="{Binding Source={StaticResource Locator},Path=ExcelPassive.BeginDetect}"/>
+                <Button  pu:ButtonHelper.Icon="&#xf021;"
+                        Background="{Binding Source={StaticResource Locator},Path=ExcelPassive.IsCycle,Converter={StaticResource BoolToColor}}"
+                        Content="{Binding Source={StaticResource Locator},Path=ExcelPassive.IsCycle,Converter={StaticResource BoolToTextCycleD}}"
+                        Command="{Binding Source={StaticResource Locator},Path=ExcelPassive.CycleDetect}"
+                        IsEnabled="{Binding Source={StaticResource Locator},Path=Main.IsConnected}"/>
+                <CheckBox Content="检测启用LED" HorizontalAlignment="Center"  Margin="0,10,0,0" 
+                          IsChecked="{Binding Source={StaticResource Locator},Path=ExcelPassive.IsLED,Mode=TwoWay}"
+                          FontFamily="楷体" FontSize="18"  Foreground="#E4F2FB"/>
+                <Button Content="打开治具LED"  pu:ButtonHelper.Icon="&#xf111;" 
+                        Command="{Binding Source={StaticResource Locator},Path=ExcelPassive.OpenLED}"
+                        IsEnabled="{Binding Source={StaticResource Locator},Path=Main.IsConnected}" />
+                <Button Content="关闭治具LED" pu:ButtonHelper.Icon="&#xf10c;" 
+                        Command="{Binding Source={StaticResource Locator},Path=ExcelPassive.CloseLED}"
+                        IsEnabled="{Binding Source={StaticResource Locator},Path=Main.IsConnected}"  />
+                <Button Content="清空列表" pu:ButtonHelper.Icon="&#xf096;" Command="{Binding Source={StaticResource Locator},Path=ExcelPassive.Clear}" />
+                <Button Content="导出Excel" pu:ButtonHelper.Icon="&#xf15c;" Command="{Binding Source={StaticResource Locator},Path=ExcelPassive.Export}" />
+                <Button Content="打印标签" pu:ButtonHelper.Icon="&#xf15c;" Command="{Binding Source={StaticResource Locator},Path=Main.Print}" />
+            </StackPanel>
+
+        </Grid>
+
+        <!--右边部分-->
+        <Grid Grid.Column="1" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60*"/>
+                <RowDefinition Height="5*"/>
+                <RowDefinition Height="35*"/>
+            </Grid.RowDefinitions>
+            <!--图片-->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Canvas Name="Left" SizeChanged="Left_SizeChanged">
+                    <Canvas.Background>
+                        <ImageBrush Stretch="Uniform"  ImageSource="{Binding Source={StaticResource Locator},Path=ExcelPassive.ImagePath}"/>
+                    </Canvas.Background>
+                </Canvas>
+                <Canvas Name="Right" Grid.Column="1" SizeChanged="Right_SizeChanged">
+                    <Canvas.Background>
+                        <ImageBrush Stretch="Uniform"  ImageSource="{Binding Source={StaticResource Locator},Path=ExcelPassive.ImagePathr}"/>
+                    </Canvas.Background>
+                </Canvas>
+            </Grid>
+            <!--步骤提示-->
+            <TextBox  Grid.Row="1"  FontSize="18" FontWeight="Bold"
+                      Background="{Binding Source={StaticResource Locator},Path=Main.OperationStep,Converter={StaticResource stringToColor} }"
+                      Text="{Binding Source={StaticResource Locator},Path=Main.OperationStep}"/>
+            <!--列表-->
+            <DockPanel Grid.Row="2">
+                <DockPanel.Resources>
+                    <ToolTip x:Key="InforTip">
+                        <StackPanel Orientation="Horizontal" >
+                            <TextBlock Foreground="Black" FontWeight="Bold" Text="{Binding .}" />
+                        </StackPanel>
+                    </ToolTip>
+                    <ContextMenu x:Key="ItemContextMenu">
+                            <MenuItem  Header="治具ON"  Click="MenuItem_ON" />
+                            <MenuItem  Header="治具OFF" Click="MenuItem_OFF" />
+                        </ContextMenu>
+                        <Style TargetType="GroupBox" BasedOn="{StaticResource {x:Type GroupBox}}">
+                        <Setter Property="pu:GroupBoxHelper.CornerRadius" Value="5"/>
+                        <Setter Property="pu:GroupBoxHelper.IsSplitLineVisible" Value="True"/>
+                        <Setter Property="pu:GroupBoxHelper.HeaderPadding" Value="5,2,0,2"/>
+                        <Setter Property="FontSize" Value="16"/>
+                        <Setter Property="FontFamily" Value="楷体"/>
+                        <Setter Property="FontWeight" Value="Bold"/>
+                        <Setter Property="Margin" Value="2,0,2,0"/>
+                    </Style>
+                    <Style TargetType="ListView" >
+                        <Setter Property="FontSize" Value="16"/>
+                        <Setter Property="BorderThickness" Value="0"/>
+                        <EventSetter Event="SelectionChanged" Handler="ListView_SelectionChanged"/>
+                       
+                    </Style>
+                    <Style TargetType="{x:Type ListViewItem}" >
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="Yellow"/>
+                                <Setter Property="Foreground" Value="Green"/>
+                               
+                            </Trigger>
+                        </Style.Triggers>
+                        <Setter Property="ContextMenu" Value="{StaticResource ItemContextMenu}" />
+                        <Setter Property="ToolTip" Value="{Binding Source={StaticResource InforTip}}"/>
+                    </Style>
+                   
+                </DockPanel.Resources>
+                
+                <Grid DockPanel.Dock="Bottom">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="3*"/>
+                    </Grid.ColumnDefinitions>
+                    <GroupBox Header="工程检测数据">
+                        <ListView ItemsSource="{Binding LearningData}" />
+                    </GroupBox>
+                    <GroupBox Header="短路数据" Grid.Column="1">
+                        <ListView ItemsSource="{Binding ShortData}"/>
+                    </GroupBox>
+                    <GroupBox Header="断路数据" Grid.Column="2">
+                        <ListView ItemsSource="{Binding CutData}" />
+                    </GroupBox>
+                </Grid>
+            </DockPanel>
+
+        </Grid>
+    </Grid>
+</Page>

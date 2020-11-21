@@ -1,0 +1,241 @@
+﻿<Page x:Class="WiringHarnessDetect.View.ParameterView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:WiringHarnessDetect.View"
+      
+        xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
+      xmlns:mvvm="http://www.galasoft.ch/mvvmlight"
+      xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+      mc:Ignorable="d" 
+      
+      d:DesignHeight="668" d:DesignWidth="1366"
+     
+      Title="ParameterView">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding Source={StaticResource Locator},Path=Parameter.Initial}"  />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <Grid Background="White">
+        <Grid.Resources>
+            <Style TargetType="TextBlock" >
+                <Setter Property="FontFamily" Value="楷体"/>
+                <Setter Property="FontSize" Value="19"/>
+                <Setter Property="Foreground" Value="#E4F2FB"/>
+                <Setter Property="Margin" Value="10,0,0,0"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+ 
+            </Style>
+            <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
+
+                <Setter Property="Foreground"  Value="WhiteSmoke"/>
+                <Setter Property="Height" Value="60"/>
+                <Setter Property="Width" Value="195"/>
+                <Setter Property="pu:ButtonHelper.CornerRadius" Value="5"/>
+                <Setter Property="Margin" Value="0,12,0,0"/>
+                <Setter Property="FontSize" Value="16"/>
+                <Setter Property="FontFamily" Value="楷体"/>
+                <Setter Property="Background" Value="#465773"/>
+
+            </Style>
+            <Style TargetType="GroupBox" BasedOn="{StaticResource {x:Type GroupBox}}">
+                <Setter Property="Margin" Value="5"/>
+                <Setter Property="Background" Value="#467EB1"/>
+                <Setter Property="FontSize" Value="18"/>
+                <Setter Property="FontFamily" Value="楷体"/>
+                <Setter Property="FontWeight" Value="Bold"/>
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="pu:GroupBoxHelper.CornerRadius" Value="5"/>
+                <Setter Property="pu:GroupBoxHelper.HeaderPadding" Value="0,1,0,1"/>
+                <Setter Property="pu:GroupBoxHelper.IsSplitLineVisible" Value="True"/>
+            </Style>
+            <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+                <Setter Property="pu:TextBoxHelper.CornerRadius" Value="4"/>
+                <Setter Property="Height" Value="36"/>
+                <Setter Property="Width" Value="180"/>
+                <Setter Property="Margin" Value="10,10,0,10"/>
+                <Setter Property="HorizontalAlignment" Value="Left"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+            </Style>
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="16*"/>
+            <ColumnDefinition Width="84*"/>
+
+        </Grid.ColumnDefinitions>
+        <!--左边部分-->
+        <Grid Background="#4F6F9A"  >
+
+            <Button Content="写入参数" FontSize="20" pu:ButtonHelper.Icon="&#xf019;"  Margin="0,200,0,0" VerticalAlignment="Top" Command="{Binding Source={StaticResource Locator},Path=Parameter.Write}"  />
+            <Button Content="修改参数" FontSize="20"  pu:ButtonHelper.Icon="&#xf044;"  Margin="0,180,0,0" Command="{Binding Source={StaticResource Locator},Path=Parameter.Write}" />
+        </Grid>
+
+        <!--右边部分-->
+        <Grid Grid.Column="1" Background="#467EB1">
+            <Grid.Resources>
+                <Style TargetType="StackPanel">
+                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                </Style>
+            </Grid.Resources>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="12*"/>
+                <ColumnDefinition Width="88*"/>
+            </Grid.ColumnDefinitions>
+            <Grid>
+                
+                <Grid.RowDefinitions>
+                    <RowDefinition  />
+                    <RowDefinition />
+                    <RowDefinition Height="100" />
+                    <RowDefinition Height="80" />
+                </Grid.RowDefinitions>
+                <StackPanel >
+                    <TextBlock Text="板卡组号" FontSize="25" Margin="20,75,0,0"/>
+                    <TextBlock Text="板 卡 号" FontSize="25" Margin="20,35,0,0"/>
+                    <TextBlock Text="物理地址" FontSize="25" Margin="20,30,0,0"/>
+                </StackPanel>
+                <StackPanel Grid.Row="1">
+                    <TextBlock Text="板卡组号" FontSize="25"  Margin="20,75,0,0"/>
+                    <TextBlock Text="板 卡 号" FontSize="25"  Margin="20,35,0,0" />
+                    <TextBlock Text="物理地址" FontSize="25"  Margin="20,35,0,0"/>
+                </StackPanel>
+              
+            </Grid>
+            <Grid Grid.Column="1">
+              
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition  />
+                    <RowDefinition />
+                    <RowDefinition Height="100" />
+                    <RowDefinition Height="80" />
+                </Grid.RowDefinitions>
+                <GroupBox Header="无源线束地址设置" DataContext="{Binding Source={StaticResource Locator},Path=Parameter.Passive}">
+                    <Grid >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel>
+                            <TextBlock  Text="首地址" Margin="40,10,0,0" />
+                            <TextBox Text="{Binding StartGroupNum,Mode=TwoWay}" />
+                            <TextBox Text="{Binding StartBoradNum,Mode=TwoWay}"/>
+                            <TextBox Text="{Binding StartAddress,Mode=TwoWay}"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" >
+                            <TextBlock Text="终地址" Margin="40,10,0,0"/>
+                            <TextBox Text="{Binding EndGroupNum,Mode=TwoWay}" />
+                            <TextBox Text="{Binding EndBoradNum,Mode=TwoWay}"/>
+                            <TextBox Text="{Binding EndAddress,Mode=TwoWay}"/>
+                        </StackPanel>
+                    </Grid>
+                </GroupBox>
+                <GroupBox Header="LED地址设置" Grid.Column="1" DataContext="{Binding Source={StaticResource Locator},Path=Parameter.LED}" >
+                    <Grid >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel>
+                            <TextBlock Text="首地址" Margin="40,10,0,0"/>
+                            <TextBox Text="{Binding StartGroupNum}" />
+                            <TextBox Text="{Binding StartBoradNum}"/>
+                            <TextBox Text="{Binding StartAddress}"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" >
+                            <TextBlock Text="终地址"  Margin="40,10,0,0"/>
+                            <TextBox Text="{Binding EndGroupNum}" />
+                            <TextBox Text="{Binding EndBoradNum}"/>
+                            <TextBox Text="{Binding EndAddress}"/>
+                        </StackPanel>
+                    </Grid>
+                </GroupBox>
+                <GroupBox Header="有源线束地址设置" Grid.Row="1" Grid.ColumnSpan="2">
+                    <Grid >
+                        <Grid.Resources>
+                            <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+                                <Setter Property="pu:TextBoxHelper.CornerRadius" Value="4"/>
+                                <Setter Property="Height" Value="36"/>
+                                <Setter Property="Width" Value="125"/>
+                                <Setter Property="Margin" Value="10,10,0,10"/>
+                                <Setter Property="HorizontalAlignment" Value="Left"/>
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                            </Style>
+                        </Grid.Resources>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                          
+                        </Grid.ColumnDefinitions>
+                        <StackPanel DataContext="{Binding Source={StaticResource Locator},Path=Parameter.ActiveDetect}" >
+                            <TextBlock Text="检测首地址" Margin="0,10,0,0" />
+                            <TextBox Text="{Binding StartGroupNum}" />
+                            <TextBox Text="{Binding StartBoradNum}"/>
+                            <TextBox Text="{Binding StartAddress}"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Margin="0,10,0,0" DataContext="{Binding Source={StaticResource Locator},Path=Parameter.ActiveDetect}">
+                            <TextBlock Text="检测终地址"/>
+                            <TextBox Text="{Binding EndGroupNum}" />
+                            <TextBox Text="{Binding EndBoradNum}"/>
+                            <TextBox Text="{Binding EndAddress}"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="2" Margin="0,10,0,0" DataContext="{Binding Source={StaticResource Locator},Path=Parameter.ActiveControl}">
+                            <TextBlock  Text="无源输出首地址" />
+                            <TextBox Text="{Binding StartGroupNum}" />
+                            <TextBox Text="{Binding StartBoradNum}"/>
+                            <TextBox Text="{Binding StartAddress}"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="3" Margin="0,10,0,0" DataContext="{Binding Source={StaticResource Locator},Path=Parameter.ActiveControl}">
+                            <TextBlock Text="无源输出终地址"/>
+                            <TextBox Text="{Binding EndGroupNum}" />
+                            <TextBox Text="{Binding EndBoradNum}"/>
+                            <TextBox Text="{Binding EndAddress}"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="4"  Margin="0,10,0,0" DataContext="{Binding Source={StaticResource Locator},Path=Parameter.ActiveRalay}">
+                            <TextBlock Text="继电器输出首地址" Margin="0"/>
+                            <TextBox Text="{Binding StartGroupNum}" />
+                            <TextBox Text="{Binding StartBoradNum}"/>
+                            <TextBox Text="{Binding StartAddress}"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="5" Margin="0,10,0,0" DataContext="{Binding Source={StaticResource Locator},Path=Parameter.ActiveRalay}">
+                            <TextBlock Text="继电器输出终地址" Margin="0"/>
+                            <TextBox Text="{Binding EndGroupNum}" />
+                            <TextBox Text="{Binding EndBoradNum}"/>
+                            <TextBox Text="{Binding EndAddress}"/>
+                        </StackPanel>
+                       
+                    </Grid>
+                </GroupBox>
+                <GroupBox Header="其他参数设置" Grid.Row="2" Grid.ColumnSpan="2">
+                    <DockPanel>
+                        <TextBlock Margin="50,0,0,0" Text="继电器器延时检测时间(ms):"/>
+                        <TextBox Text="{Binding Source={StaticResource Locator},Path=Parameter.ActiveDetectTime}" />
+                        <TextBlock Margin="80,0,0,0" Text="无源检测延时(ms):"/>
+                        <TextBox  Text="{Binding Source={StaticResource Locator},Path=Parameter.PassiveDetectTime}"/>
+                    </DockPanel>
+                </GroupBox>
+                <StackPanel Grid.Row="3" Grid.ColumnSpan="2" HorizontalAlignment="Left">
+                    <DockPanel Margin="0,10,0,0">
+                        <TextBlock  Foreground="Yellow" FontSize="20" Text="首地址的物理地址=1024*(板卡组号-1）+128*(板卡号-1）" DockPanel.Dock="Left"/>
+                        <TextBlock Foreground="Yellow" FontSize="20" Text="板卡组号的范围：(1-6)" Margin="100,0,0,0"/>
+                    </DockPanel>
+                    <DockPanel Margin="0,10,0,0">
+                        <TextBlock Foreground="Yellow" FontSize="20" Text="终地址的物理地址=1024*(板卡组号-1）+128*(板卡号-1）+127" DockPanel.Dock="Left"/>
+                        <TextBlock Foreground="Yellow" FontSize="20" Text="板卡号的范围：(1-8)" Margin="70,0,0,0"/>
+                    </DockPanel>
+
+                </StackPanel>
+            </Grid>
+        </Grid>
+        
+    </Grid>
+</Page>

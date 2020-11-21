@@ -1,0 +1,149 @@
+﻿<pu:WindowX
+        
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WiringHarnessDetect"
+        xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:ni="http://schemas.ni.com/controls/2009/xaml/presentation" 
+        x:Class="WiringHarnessDetect.MainWindow"  
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        WindowStyle="None" ResizeMode="NoResize"
+   
+        pu:WindowXCaption.Height="0"  
+        mc:Ignorable="d" WindowStartupLocation="CenterScreen"
+        Title="线束检测管理系统" Height="780" Width="1380" x:Name="mainWindow"
+      DataContext="{Binding Source={StaticResource Locator},Path=Main}">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding  OnLoad}"  />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <Grid >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25" />
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <!--最上层提示-->
+        <DockPanel Name="grid" Background="#0375B1" >
+            <DockPanel.Resources>
+                <Style TargetType="{x:Type TextBlock}">
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="FontSize" Value="15"/>
+                    <Setter Property="FontFamily" Value="楷体"/>
+                </Style>
+                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}" >
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="Width" Value="16"/>
+                    <Setter Property="BorderBrush" Value="Transparent"/>
+                    <Setter Property="Margin" Value="0,2,4,2"/>
+                    <Setter Property="pu:ButtonHelper.ButtonStyle" Value="Standard"/>
+                    <Setter Property="pu:ButtonHelper.HoverBrush" Value="Gray"/>
+                    <EventSetter Event="Click" Handler="Button_Click"/>
+                </Style>
+                <Style TargetType="Image"  >
+                    <Setter Property="Height" Value="14"/>
+                    <Setter Property="Width" Value="14"/>
+                    <Setter Property="Stretch" Value="Uniform"/>
+                </Style>
+            </DockPanel.Resources>
+            <Image Source="Image/用户.png" Width="18" Height="18" Margin="10,0,0,0" HorizontalAlignment="Left"/>
+            <TextBlock Text="{Binding User.UserName, StringFormat=欢迎您：管理员|\{0\}}" Margin="15,0,0,0"/>
+            <Button Tag="close" DockPanel.Dock="Right">
+                <Image Source="/Image/close.png" Width="14" Height="14"/>
+            </Button>
+            <Button Tag="max" DockPanel.Dock="Right">
+                <Image Source="/Image/max.png" Width="14" Height="14"/>
+            </Button>
+            <Button Tag="min" DockPanel.Dock="Right">
+                <Image Source="/Image/minus.png" Width="14" Height="14"/>
+            </Button>
+            <TextBlock Text="{Binding ConverterCulture=Zh-cn, Source={x:Static sys:DateTime.Now}, StringFormat=系统日期:\{0:D\}}"  Margin="0,0,15,0" HorizontalAlignment="Right"/>
+        </DockPanel>
+        <!--中间按钮导航栏-->
+        <StackPanel Grid.Row="1" Background="#0A78B1"  Opacity="0.9" Orientation="Horizontal"  >
+            <StackPanel.Resources>
+                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                    <Setter Property="Height" Value="70"/>
+                    <Setter Property="Width" Value="100"/>
+                    <Setter Property="BorderBrush" Value="Transparent"/>
+                    <Setter Property="Margin" Value="35,2,0,2"/>
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="pu:ButtonHelper.ButtonStyle" Value="Standard"/>
+                    <Setter Property="pu:ButtonHelper.CornerRadius" Value="10"/>
+                    <Setter Property="pu:ButtonHelper.HoverBrush" Value="Gray"/>
+                    <EventSetter  Event="Click" Handler="Button_Click"/>
+
+                </Style>
+                <Style TargetType="{x:Type Image}">
+                    <Setter Property="Height" Value="32"/>
+                    <Setter Property="Width" Value="52"/>
+
+                </Style>
+                <Style TargetType="{x:Type TextBlock}" >
+                    <Setter Property="FontFamily" Value="楷体"/>
+                    <Setter Property="FontSize" Value="19"/>
+                    <Setter Property="FontWeight" Value="DemiBold"/>
+                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                    <Setter Property="Margin" Value="0,5,0,0"/>
+                    <Setter Property="Foreground" Value="White"/>
+                </Style>
+            </StackPanel.Resources>
+            <Label Content="LZDS线束检测管理系统" 
+                   BorderThickness="0" 
+                   Background="Transparent" 
+                   FontFamily="楷体" 
+                   Foreground="white" 
+                   FontSize="40" 
+                   FontWeight="Bold"
+                   VerticalContentAlignment="Center" 
+                   Margin="25,0,0,0"/>
+            <Button Tag="Passive"  Margin="110,0,0,0">
+                <StackPanel   >
+                    <Image Source="/Image/线索S.png" />
+                    <TextBlock Text="无源线束" />
+                </StackPanel>
+
+            </Button>
+            <Button  Tag="Active" Name="ActiveButton"  >
+                <StackPanel  >
+                    <Image Source="/Image/方向.png"/>
+                    <TextBlock Text="有源线束"/>
+                </StackPanel>
+            </Button>
+            <Button Tag="PaperManager">
+                <StackPanel >
+                    <Image Source="/Image/database.png"/>
+                    <TextBlock Text="工程管理"/>
+                </StackPanel>
+            </Button>
+            <Button Tag="Parameter">
+                <StackPanel >
+                    <Image Source="/Image/setting.png"/>
+                    <TextBlock Text="参数设置"/>
+                </StackPanel>
+            </Button>
+            <Button Tag="UserManager">
+                <StackPanel >
+                    <Image Source="/Image/UserManager.png"/>
+                    <TextBlock Text="用户管理"/>
+                </StackPanel>
+            </Button>
+            
+
+            <Button Tag="Exit">
+                <StackPanel >
+                    <Image Source="/Image/exit.png"/>
+                    <TextBlock Text="系统退出"/>
+                </StackPanel>
+            </Button>
+
+        </StackPanel>
+        <!--中间加载页-->
+        <Frame x:Name="mainframe" NavigationUIVisibility="Hidden" Source="View/PaperManagerView.xaml"  Grid.Row="2" />
+    </Grid>
+</pu:WindowX>

@@ -1,0 +1,336 @@
+﻿<Page x:Class="WiringHarnessDetect.View.ActiveView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:WiringHarnessDetect.View"
+      xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
+      xmlns:mvvm="http://www.galasoft.ch/mvvmlight"
+      xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+      mc:Ignorable="d" 
+      DataContext="{Binding Source={StaticResource Locator},Path=Atctive}"
+      d:DesignHeight="668" d:DesignWidth="1366"
+      Title="PassiveView">
+
+    <Grid Background="White">
+        <Grid.Resources>
+            <Style TargetType="TextBlock" >
+                <Setter Property="FontFamily" Value="楷体"/>
+                <Setter Property="FontSize" Value="19"/>
+                <Setter Property="Foreground" Value="#E4F2FB"/>
+                <Setter Property="Margin" Value="10,0,0,0"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+
+            </Style>
+            <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
+
+                <Setter Property="Foreground"  Value="WhiteSmoke"/>
+                <Setter Property="Height" Value="40"/>
+                <Setter Property="Width" Value="195"/>
+                <Setter Property="pu:ButtonHelper.CornerRadius" Value="5"/>
+                <Setter Property="Margin" Value="0,12,0,0"/>
+                <Setter Property="FontSize" Value="16"/>
+                <Setter Property="FontFamily" Value="楷体"/>
+
+                <Setter Property="Background" Value="#465773"/>
+
+            </Style>
+
+            <Style TargetType="GroupBox" BasedOn="{StaticResource {x:Type GroupBox}}">
+                <Setter Property="pu:GroupBoxHelper.CornerRadius" Value="5"/>
+                <Setter Property="pu:GroupBoxHelper.IsSplitLineVisible" Value="True"/>
+                <Setter Property="pu:GroupBoxHelper.HeaderPadding" Value="5,2,0,2"/>
+                <Setter Property="FontSize" Value="16"/>
+                <Setter Property="FontFamily" Value="楷体"/>
+                <Setter Property="FontWeight" Value="Bold"/>
+                <Setter Property="Margin" Value="2,0,2,0"/>
+            </Style>
+            <Style TargetType="ListBox" >
+                <Setter Property="FontSize" Value="16"/>
+                <Setter Property="BorderThickness" Value="0"/>
+            </Style>
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="16*"/>
+            <ColumnDefinition Width="84*"/>
+
+        </Grid.ColumnDefinitions>
+        <!--左边部分-->
+        <Grid Background="#4F6F9A" >
+
+            <StackPanel>
+                <TextBlock Text="选择工程" Margin="10,5,0,0"/>
+                <ComboBox Name="projcmb" FontSize="18"  Margin="10,5,10,0" 
+                           pu:ComboBoxHelper.ItemHeight="25" Height="25"
+                           ItemsSource="{Binding Source={StaticResource Locator},Path=Main.Projects}"
+                          SelectedItem="{Binding Source={StaticResource Locator},Path=Atctive.Project,Mode=OneWayToSource}" 
+                             
+                          DisplayMemberPath="ProjectName"  SelectedValuePath="ProjectNO" >
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectionChanged">
+                            <mvvm:EventToCommand Command="{Binding Source={StaticResource Locator}, Path=Paper.ChangeProject}" PassEventArgsToCommand="True"   CommandParameter="{Binding SelectedValue, ElementName=projcmb}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </ComboBox>
+                <Button  pu:ButtonHelper.Icon="&#xf09e;"
+                         Command="{Binding Source={StaticResource Locator},Path=Main.Connect}" 
+                         Background="{Binding Source={StaticResource Locator},Path=Main.IsConnected,Converter={StaticResource BoolToColor}}" 
+                         Content="{Binding Source={StaticResource Locator},Path=Main.IsConnected,Converter={StaticResource BoolToText}}" />
+                <DockPanel Margin="0,10,0,0">
+                    <CheckBox pu:CheckBoxHelper.BoxWidth="20" pu:CheckBoxHelper.BoxHeight="20" Content=" 点亮LED" HorizontalAlignment="Center" Margin="20,10,0,0" FontFamily="楷体" FontSize="18" Foreground="#E4F2FB" IsChecked="{Binding IsLED}" />
+                </DockPanel>
+                <DockPanel Margin="0,15,0,10">
+                    <CheckBox Content=" 检测模式" pu:CheckBoxHelper.CheckBoxStyle="Switch"  
+                                    pu:CheckBoxHelper.BoxHeight="20"
+                                    pu:CheckBoxHelper.BoxWidth="40"
+                                    pu:CheckBoxHelper.CheckedBackground="#3F3F3F"
+                                    pu:CheckBoxHelper.CheckedContent=" 学习模式" FontSize="20"  Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"
+                               FontFamily="楷体"  Foreground="#E4F2FB" HorizontalAlignment="Center" IsChecked="{Binding Source={StaticResource Locator},Path=Active.IsLearning ,Mode=TwoWay}"/>
+                </DockPanel>
+                <Button Content="开始测量" pu:ButtonHelper.Icon="&#xf144;"
+                        IsEnabled="{Binding Source={StaticResource Locator},Path=Main.IsConnected}"
+                        Command="{Binding Source={StaticResource Locator},Path=Atctive.BeginDetect}"/>
+                <Button  pu:ButtonHelper.Icon="&#xf021;"
+                         Content="{Binding Source={StaticResource Locator},Path=Atctive.IsCycle,Converter={StaticResource BoolToTextCycleD}}"
+                        Command="{Binding Source={StaticResource Locator},Path=Atctive.CycleDetect}"
+                          Background="{Binding Source={StaticResource Locator},Path=Atctive.IsCycle,Converter={StaticResource BoolToColor}}"
+                        IsEnabled="{Binding Source={StaticResource Locator},Path=Main.IsConnected}"/>
+                <Button Content="暂停检测" pu:ButtonHelper.Icon="&#xf28c;"
+                        
+                        IsEnabled="{Binding Source={StaticResource Locator},Path=Main.IsConnected}"/>
+                <Button Content="执行下一步" Name="nextstep" pu:ButtonHelper.Icon="&#xf061;" 
+                        Command="{Binding Source={StaticResource Locator},Path=Atctive.NextStep}"
+                        IsEnabled="{Binding Source={StaticResource Locator},Path=Main.IsConnected}"/>
+
+                <Button Content="保存数据" pu:ButtonHelper.Icon="&#xf0c7;"/>
+                <DockPanel Margin="0,10,0,10">
+                    <Button Margin="10,5,0,0" Width="90" Content="点亮LED"
+                            IsEnabled="{Binding Source={StaticResource Locator},Path=Main.IsConnected}"/>
+                    <Button Margin="10,5,0,0" Width="90" Content="关闭LED"
+                            IsEnabled="{Binding Source={StaticResource Locator},Path=Main.IsConnected}"/>
+                </DockPanel>
+                <DockPanel  Margin="0,10,0,10">
+                    <Button Margin="10,5,0,0" Width="90" Content="清空列表"/>
+                    <Button Margin="10,5,0,0" Width="90" Content="导出列表"/>
+                </DockPanel>
+
+                <Button Content="打印标签"  pu:ButtonHelper.Icon="&#xf02f;"/>
+            </StackPanel>
+
+        </Grid>
+
+        <!--右边部分-->
+        <TabControl Grid.Column="1" Name="tabcontrol">
+            <TabItem Name="learntab" Header="学习模式" FontSize="16" FontFamily="楷体" FontWeight="Bold" >
+                <Grid  >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="60*"/>
+                        <RowDefinition Height="5*"/>
+                        <RowDefinition Height="35*"/>
+                    </Grid.RowDefinitions>
+                    <!--图片-->
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="50*"/>
+                            <ColumnDefinition Width="50*"/>
+                        </Grid.ColumnDefinitions>
+                        <GroupBox Header="保险盒">
+                            <Canvas Name="LLCanva">
+                                <Canvas.Background>
+                                    <ImageBrush Stretch="Uniform"  ImageSource="{Binding Source={StaticResource Locator},Path=Atctive.LImagePath}"/>
+                                </Canvas.Background>
+                            </Canvas>
+                        </GroupBox>
+                        <GroupBox Grid.Column="1" Header="治具图">
+                            <Canvas Name="LRCanva">
+                                <Canvas.Background>
+                                    <ImageBrush Stretch="Uniform"  ImageSource="{Binding Source={StaticResource Locator},Path=Atctive.LImagePath}"/>
+                                </Canvas.Background>
+                            </Canvas>
+                        </GroupBox>
+                    </Grid>
+                    <!--步骤提示-->
+                    <TextBox  Grid.Row="1" Background="#FFA500"/>
+                    <!--列表-->
+                    <DockPanel Grid.Row="2">
+                        <TextBlock DockPanel.Dock="Top" Text="检测信息" Foreground="Black"/>
+                        <Grid  DockPanel.Dock="Bottom">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+
+                            </Grid.ColumnDefinitions>
+                            <Grid.Resources>
+                                <Style TargetType="DataGrid" BasedOn="{StaticResource {x:Type DataGrid}}">
+                                    <Setter Property="CanUserAddRows" Value="False"/>
+                                    <Setter Property="AutoGenerateColumns" Value="False"/>
+                                    <Setter Property="pu:DataGridHelper.HeaderMinHeight" Value="20"/>
+                                    <Setter Property="pu:DataGridHelper.HeaderBackground" Value="#4F6F9A"/>
+                                    <Setter Property="pu:DataGridHelper.HeaderForeground" Value="White"/>
+                                </Style>
+                                <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}" >
+                                    <Setter Property="FontWeight" Value="Bold" />
+                                </Style>
+                            </Grid.Resources>
+                            <GroupBox Header="当前分析步骤" >
+                                <Grid>
+                                    <ListView  Visibility="{Binding Step,Converter={StaticResource ConvertLIntToVisible}}" ItemsSource="{Binding LearningData}">
+
+                                    </ListView>
+                                    <DataGrid Visibility="{Binding Step,Converter={StaticResource ConvertIntToVisible}}" ItemsSource="{Binding CurrentDelayData}" >
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn Header="检测步骤" Binding="{Binding DetectionStepCode}"/>
+                                            <DataGridTextColumn Header="引脚电压" Binding="{Binding PinVoltageCode}"/>
+                                            <DataGridTextColumn Header="治具名称" Binding="{Binding FixtureName}"/>
+                                            <DataGridTextColumn Header="治具编号" Binding="{Binding FixtureCode}"/>
+                                            <DataGridTextColumn Header="引脚号" Binding="{Binding PinNO}"/>
+                                            <DataGridTextColumn Header="物理通道" Binding="{Binding PhysicalChannel}"/>
+                                            <DataGridTextColumn Header="器件名称" Binding="{Binding  DeviceName}"/>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                </Grid>
+                            </GroupBox>
+                            <GroupBox Header="总分析结果" Grid.Column="1">
+                                <DataGrid ItemsSource="{Binding DelayData}">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="检测步骤" Binding="{Binding DetectionStepCode}"/>
+                                        <DataGridTextColumn Header="引脚电压" Binding="{Binding PinVoltageCode}"/>
+                                        <DataGridTextColumn Header="治具名称" Binding="{Binding FixtureName}"/>
+                                        <DataGridTextColumn Header="治具编号" Binding="{Binding FixtureCode}"/>
+                                        <DataGridTextColumn Header="引脚号" Binding="{Binding PinNO}"/>
+                                        <DataGridTextColumn Header="物理通道" Binding="{Binding PhysicalChannel}"/>
+                                        <DataGridTextColumn Header="器件名称" Binding="{Binding  DeviceName}"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </GroupBox>
+
+                        </Grid>
+                    </DockPanel>
+
+                </Grid>
+            </TabItem>
+            <TabItem Name="detecttab" Header="检测模式" FontSize="16" FontFamily="楷体" FontWeight="Bold" >
+
+                <Grid  >
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="60*"/>
+                        <RowDefinition Height="5*"/>
+                        <RowDefinition Height="35*"/>
+                    </Grid.RowDefinitions>
+                    <!--图片-->
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="132*"/>
+                            <ColumnDefinition Width="414*"/>
+                            <ColumnDefinition Width="547*"/>
+                        </Grid.ColumnDefinitions>
+                        <GroupBox Header="保险盒" Grid.ColumnSpan="2">
+                            <Canvas Name="DLCanva">
+                                <Canvas.Background>
+                                    <ImageBrush Stretch="Uniform"  ImageSource="{Binding Source={StaticResource Locator},Path=Atctive.LImagePath}"/>
+                                </Canvas.Background>
+                            </Canvas>
+                        </GroupBox>
+                        <GroupBox Grid.Column="2" Header="治具图">
+                            <Canvas Name="DRCanva">
+                                <Canvas.Background>
+                                    <ImageBrush Stretch="Uniform"  ImageSource="{Binding Source={StaticResource Locator},Path=Atctive.LImagePath}"/>
+                                </Canvas.Background>
+                            </Canvas>
+                        </GroupBox>
+                    </Grid>
+                    <!--步骤提示-->
+                    <TextBox  Grid.Row="1" Background="#FFA500"/>
+                    <!--列表-->
+                    <DockPanel Grid.Row="2">
+                        <TextBlock DockPanel.Dock="Top" Text="检测信息" Foreground="Black"/>
+                        <Grid DockPanel.Dock="Bottom">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.Resources>
+                                <Style TargetType="ListView" >
+                                    <EventSetter Event="SelectionChanged" Handler="ListView_SelectionChanged"/>
+                                </Style>
+
+                                <Style TargetType="DataGrid" BasedOn="{StaticResource {x:Type DataGrid}}">
+                                    <Setter Property="CanUserAddRows" Value="False"/>
+                                    <Setter Property="AutoGenerateColumns" Value="False"/>
+                                    <Setter Property="pu:DataGridHelper.HeaderMinHeight" Value="20"/>
+                                    <Setter Property="pu:DataGridHelper.HeaderBackground" Value="#4F6F9A"/>
+                                    <Setter Property="pu:DataGridHelper.HeaderForeground" Value="White"/>
+                                </Style>
+                                <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}" >
+                                    <Setter Property="FontWeight" Value="Bold" />
+                                </Style>
+
+                            </Grid.Resources>
+                            <GroupBox Header="工程数据列表"  >
+                                <Grid>
+                                    <ListView Tag="dsample" Visibility="{Binding Step,Converter={StaticResource ConvertLIntToVisible}}" ItemsSource="{Binding LearningData}">
+
+                                    </ListView>
+                                    <DataGrid Visibility="{Binding Step,Converter={StaticResource ConvertIntToVisible}}" ItemsSource="{Binding DelayData}">
+                                        <DataGrid.Columns >
+                                            <DataGridTextColumn Header="检测步骤" Binding="{Binding DetectionStepCode}"/>
+                                            <DataGridTextColumn Header="引脚电压" Binding="{Binding PinVoltageCode}"/>
+                                            <DataGridTextColumn Header="治具名称" Binding="{Binding FixtureName}"/>
+                                            <DataGridTextColumn Header="治具编号" Binding="{Binding FixtureCode}"/>
+                                            <DataGridTextColumn Header="引脚号" Binding="{Binding PinNO}"/>
+                                            <DataGridTextColumn Header="物理通道" Binding="{Binding PhysicalChannel}"/>
+                                            <DataGridTextColumn Header="器件名称" Binding="{Binding  DeviceName}"/>
+                                        </DataGrid.Columns>
+                                    </DataGrid >
+                                </Grid>
+
+                            </GroupBox>
+                            <GroupBox Header="短路列表" Grid.Column="1">
+                                <Grid>
+                                    <ListView Tag="short" Visibility="{Binding Step,Converter={StaticResource ConvertLIntToVisible}}" ItemsSource="{Binding ShortData}">
+
+                                    </ListView>
+                                    <DataGrid Visibility="{Binding Step,Converter={StaticResource ConvertIntToVisible}}" ItemsSource="{Binding JKShortData}">
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn Header="检测步骤" Binding="{Binding DetectionStepCode}"/>
+                                            <DataGridTextColumn Header="引脚电压" Binding="{Binding PinVoltageCode}"/>
+                                            <DataGridTextColumn Header="治具名称" Binding="{Binding FixtureName}"/>
+                                            <DataGridTextColumn Header="治具编号" Binding="{Binding FixtureCode}"/>
+                                            <DataGridTextColumn Header="引脚号" Binding="{Binding PinNO}"/>
+                                            <DataGridTextColumn Header="物理通道" Binding="{Binding PhysicalChannel}"/>
+                                            <DataGridTextColumn Header="关联器件" Binding="{Binding  DeviceName}"/>
+                                            <DataGridTextColumn Header="器件关联点" Binding="{Binding }"/>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                </Grid>
+                            </GroupBox>
+                            <GroupBox Header="断路列表" Grid.Column="2">
+                                <Grid>
+                                    <ListView Tag="cut" Visibility="{Binding Step,Converter={StaticResource ConvertLIntToVisible}}" ItemsSource="{Binding CutData}">
+
+                                    </ListView>
+                                    <DataGrid Visibility="{Binding Step,Converter={StaticResource ConvertIntToVisible}}" ItemsSource="{Binding JKCutData}">
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn Header="检测步骤" Binding="{Binding DetectionStepCode}"/>
+                                            <DataGridTextColumn Header="引脚电压" Binding="{Binding PinVoltageCode}"/>
+                                            <DataGridTextColumn Header="治具名称" Binding="{Binding FixtureName}"/>
+                                            <DataGridTextColumn Header="治具编号" Binding="{Binding FixtureCode}"/>
+                                            <DataGridTextColumn Header="引脚号" Binding="{Binding PinNO}"/>
+                                            <DataGridTextColumn Header="物理通道" Binding="{Binding PhysicalChannel}"/>
+                                            <DataGridTextColumn Header="关联器件" Binding="{Binding  DeviceName}"/>
+                                            <DataGridTextColumn Header="器件关联点" Binding="{Binding }"/>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                </Grid>
+                            </GroupBox>
+                        </Grid>
+                    </DockPanel>
+
+                </Grid>
+            </TabItem>
+        </TabControl>
+
+    </Grid>
+</Page>

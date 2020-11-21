@@ -1,0 +1,423 @@
+﻿<Page x:Class="WiringHarnessDetect.View.ExcelManagerView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:WiringHarnessDetect.View"
+      xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
+      mc:Ignorable="d" DataContext="{Binding Source={StaticResource Locator},Path=ExcelPaper}"
+      xmlns:mvvm="http://www.galasoft.ch/mvvmlight"
+      xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+      d:DesignHeight="668" d:DesignWidth="1366"
+      Title="ExcelManagerView">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding Source={StaticResource Locator},Path=ExcelPaper.OnLoad}"  />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <Grid Background="White">
+
+        <Grid.Resources>
+            <Style TargetType="TextBlock" >
+                <Setter Property="FontFamily" Value="楷体"/>
+                <Setter Property="FontSize" Value="19"/>
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="Margin" Value="10,0,0,0"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+
+            </Style>
+            <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
+                <Setter Property="Background" Value="#465773"/>
+                <Setter Property="Height" Value="40"/>
+                <Setter Property="Width" Value="195"/>
+                <Setter Property="FontSize" Value="18"/>
+
+                <Setter Property="Foreground" Value="#E4F2FB"/>
+                <Setter Property="Margin" Value="0,18,0,0"/>
+                <Setter Property="pu:ButtonHelper.CornerRadius" Value="5"/>
+                <Setter Property="FontFamily" Value="楷体"/>
+            </Style>
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="16*"/>
+            <ColumnDefinition Width="84*"/>
+
+        </Grid.ColumnDefinitions>
+        <!--左边部分-->
+        <Grid Background="#4F6F9A">
+            <StackPanel>
+                <TextBlock Text="选择车型" Margin="5,5,0,0"/>
+                <ComboBox  Name="cmbCType" FontSize="16" Height="25" Margin="1,5,1,1"  
+                           DisplayMemberPath="CarName"
+                           ItemsSource="{Binding Source={StaticResource Locator},Path=Main.CarTypes}" 
+                           SelectedItem="{Binding Source={StaticResource Locator},Path=ExcelPaper.Car}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectionChanged">
+                            <mvvm:EventToCommand Command="{Binding Source={StaticResource Locator},Path=ExcelPaper.ChangeWire}" CommandParameter="car" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </ComboBox>
+                <TextBlock Text="选择线束" Margin="5,5,0,0"/>
+                <ComboBox Name="partcmb" FontSize="16" Height="25" Margin="1,5,1,1" 
+                          ItemsSource="{Binding Source={StaticResource Locator},Path=Main.WireTypes}" 
+                          DisplayMemberPath="WireName"  
+                           SelectedItem="{Binding Source={StaticResource Locator}, Path=ExcelPaper.Wire,Mode=OneWayToSource}" >
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectionChanged">
+                            <mvvm:EventToCommand Command="{Binding Source={StaticResource Locator},Path=ExcelPaper.ChangeWire}" CommandParameter="wire" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </ComboBox>
+                <TextBlock Text="选择工程" Margin="5,5,0,0"/>
+                <ComboBox Name="projectcmb" FontSize="16" Height="25" Margin="1,5,1,1" 
+                          ItemsSource="{Binding Source={StaticResource Locator},Path=Main.ExProjects}" 
+                          DisplayMemberPath="ProjectName"  
+                           SelectedItem="{Binding Source={StaticResource Locator}, Path=ExcelPaper.Project,Mode=OneWayToSource}" >
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectionChanged">
+                            <mvvm:EventToCommand Command="{Binding Source={StaticResource Locator},Path=ExcelPaper.ChangeProject}" 
+                                                 PassEventArgsToCommand="True"   CommandParameter="{Binding SelectedValue, ElementName=projectcmb}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </ComboBox>
+                <TextBlock Text="选择治具" Margin="5,5,0,0"/>
+                <ComboBox Name="cmbFixture" FontSize="16" Height="25" Margin="1,5,1,0" 
+                          ItemsSource="{Binding Source={StaticResource Locator},Path=ExcelPaper.Fixtures}" 
+                          SelectedItem="{Binding Source={StaticResource Locator},Path=ExcelPaper.Fixture}"
+                          DisplayMemberPath="FixtureType" 
+                            >
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectionChanged">
+                            <mvvm:EventToCommand Command="{Binding Source={StaticResource Locator},Path=ExcelPaper.ChangeFixture}" 
+                                                 PassEventArgsToCommand="True"  
+                                                 CommandParameter="{Binding SelectedItem, ElementName=cmbFixture}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </ComboBox>
+                <Button Content="治具信息导出" pu:ButtonHelper.Icon="&#xf15c;" Command="{Binding Source={StaticResource Locator},Path=ExcelPaper.ExportExcel}" />
+            </StackPanel>
+        </Grid>
+        <!--右边部分-->
+        <Grid Grid.Column="1" Background="#467EB1">
+            <Grid.Resources>
+                <Style TargetType="TextBlock"  x:Key="font1">
+                    <Setter Property="FontFamily" Value="楷体"/>
+                    <Setter Property="FontSize" Value="15"/>
+                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="Margin" Value="0"/>
+                    <Setter Property="FontWeight" Value="Bold"/>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                </Style>
+                <Style TargetType="Menu">
+                    <Setter Property="Background" Value="#467EB1"/>
+
+                </Style>
+                <Style TargetType="MenuItem">
+                    <Setter Property="FontFamily" Value="楷体"/>
+                    <Setter Property="Foreground" Value="Black"/>
+                    <Setter Property="FontSize" Value="16"/>
+                    <Setter Property="FontWeight" Value="Bold"/>
+                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                    <Setter Property="Margin" Value="10,2,0,0"/>
+                    <EventSetter Event="Click" Handler="MenuItem_Click"/>
+                </Style>
+                <Style TargetType="GroupBox">
+                    <Setter Property="FontFamily" Value="楷体"/>
+                    <Setter Property="FontSize" Value="16"/>
+                    <Setter Property="Foreground" Value="#E4F2FB"/>
+                </Style>
+                <Style TargetType="DockPanel">
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="Margin" Value="0,5,0,0"/>
+                    <Setter Property="Background" Value="Transparent"/>
+                </Style>
+                <Style TargetType="Button" x:Key="btn1" BasedOn="{StaticResource {x:Type Button}}">
+
+                    <Setter Property="Background" Value="#465773"/>
+                    <Setter Property="Width" Value="120"/>
+                    <Setter Property="Height" Value="40"/>
+                    <Setter Property="pu:ButtonHelper.CornerRadius" Value="5"/>
+                    <Setter Property="FontFamily" Value="楷体"/>
+                    <Setter Property="FontSize" Value="16"/>
+                    <Setter Property="FontWeight" Value="Medium"/>
+                    <Setter Property="Foreground" Value="WhiteSmoke"/>
+                    <Setter Property="Margin" Value="15,15,0,0"/>
+
+                </Style>
+                <Style TargetType="Button" x:Key="btn2">
+                    <Setter Property="Background" Value="#465773"/>
+                    <Setter Property="Width" Value="140"/>
+                    <Setter Property="pu:ButtonHelper.CornerRadius" Value="5"/>
+                </Style>
+            </Grid.Resources>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="5*"/>
+                <RowDefinition Height="70*"/>
+                <RowDefinition Height="25*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="75*"/>
+                <ColumnDefinition Width="25*"/>
+            </Grid.ColumnDefinitions>
+
+            <!--中间菜单栏-->
+            <StackPanel Orientation="Horizontal" >
+                <Menu Margin="0,2,0,4" Background="#467EB1">
+                    <Menu.Resources>
+                        <Style TargetType="TextBlock" BasedOn="{StaticResource font1}">
+                            <Setter Property="Margin" Value="0"/>
+                        </Style>
+                    </Menu.Resources>
+                    <MenuItem >
+                        <MenuItem.Header >
+                            <DockPanel  >
+                                <Image Source="/Image/工程.png" />
+                                <TextBlock Text="车型管理"  Margin="0"/>
+                            </DockPanel>
+                        </MenuItem.Header>
+                        <MenuItem Header="新建车型"/>
+                        <MenuItem Header="修改车型"/>
+                        <MenuItem Header="删除车型"/>
+                    </MenuItem>
+                    <MenuItem>
+                        <MenuItem.Header>
+                            <DockPanel  >
+                                <Image Source="/Image/管理.png" />
+                                <TextBlock Text="线束管理" Margin="0"/>
+                            </DockPanel>
+                        </MenuItem.Header>
+                        <MenuItem Header="新建线束"/>
+                        <MenuItem Header="修改线束"/>
+                        <MenuItem Header="删除线束"/>
+                    </MenuItem>
+                    <MenuItem>
+                        <MenuItem.Header>
+                            <DockPanel  >
+                                <Image Source="/Image/模型列表.png"/>
+                                <TextBlock Text="工程管理" Margin="0"/>
+                            </DockPanel>
+                        </MenuItem.Header>
+                        <MenuItem Header="新建工程" />
+                        <MenuItem Header="修改工程"/>
+                        <MenuItem Header="删除工程"/>
+                    </MenuItem>
+                    <MenuItem  >
+                        <MenuItem.Header>
+                            <DockPanel  >
+                                <Image Source="/Image/清空.png"/>
+                                <TextBlock Text="治具管理" Margin="0"/>
+                            </DockPanel>
+                        </MenuItem.Header>
+                        <MenuItem Header="新建治具" />
+                        <MenuItem Header="修改治具" />
+                        <MenuItem Header="删除治具"/>
+                    </MenuItem>
+                </Menu>
+            </StackPanel>
+            <!--中间Canavs图纸-->
+            <Grid Grid.Row="1" Background="#0375B1" >
+                
+                <Canvas Name="canvas" SizeChanged="Canvas_SizeChanged" MouseLeftButtonDown="Canvas_MouseLeftButtonDown"  MouseRightButtonDown="Canvas_MouseRightButtonDown" >
+                    <Canvas.Background>
+                        <ImageBrush Stretch="Uniform"  ImageSource="{Binding Source={StaticResource Locator},Path=ExcelPaper.ImagePath}"/>
+                    </Canvas.Background>
+                </Canvas>
+            </Grid>
+
+            <!--右边操作按钮-->
+            <Grid Grid.Row="0"  Grid.Column="1"  Grid.RowSpan="2" Background="#4F6F9A" Margin="0" >
+                <Grid.Resources>
+                    <Style TargetType="TextBlock"  BasedOn="{StaticResource font1}">
+                        <Setter Property="Margin" Value="0"/>
+                        <Setter Property="Foreground" Value="White"/>
+                    </Style>
+                </Grid.Resources>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="35*"/>
+                    <RowDefinition Height="45*"/>
+                    <RowDefinition Height="20*"/>
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0" VerticalAlignment="Center">
+                    <StackPanel.Resources>
+                        <Style TargetType="Image" >
+                            <Setter Property="Width" Value="25"/>
+                            <Setter Property="Height" Value="25"/>
+
+                        </Style>
+                        <Style TargetType="Button" >
+                            <Setter Property="Width" Value="30"/>
+                            <Setter Property="Height" Value="30"/>
+                            <Setter Property="Foreground" Value="White"/>
+                            <Setter Property="Background" Value="Transparent"/>
+                            <EventSetter  Event="Click"  Handler="Button_Click"/>
+                        </Style>
+                        <Style TargetType="TextBlock" BasedOn="{StaticResource font1}">
+                            <Setter Property="Margin" Value="0"/>
+                            <Setter Property="FontSize" Value="15"/>
+                            <Setter Property="Foreground" Value="NavajoWhite"/>
+                        </Style>
+                    </StackPanel.Resources>
+                    <TextBlock   Foreground="White" Text="模型操作" FontWeight="Bold" Margin="0,5" FontSize="18" VerticalAlignment="Top"/>
+                    <Separator    Height="4" VerticalAlignment="Top" />
+                    <DockPanel Margin="0,5,0,0" >
+
+                        <TextBlock Text="  创建" Margin="10,0,30,0" />
+                        <Button Tag="Create">
+                            <Image Source="/Image/create.png" />
+                        </Button>
+                        <TextBlock Text="清空" Margin="60,0,0,0"/>
+                        <Button Tag="clsAll" Click="Button_Click">
+                            <Image Source="/Image/框选.png" />
+                        </Button>
+                    </DockPanel>
+                    <DockPanel Margin="0,5,0,0">
+                        <TextBlock Text="  移动" Margin="10,0,30,0" />
+                        <Button Tag="Move" >
+                            <Image Source="/Image/move.png" />
+                        </Button>
+                        <TextBlock Text="删除" Margin="60,0,0,0" />
+                        <Button Tag="Delete" >
+                            <Image Source="/Image/橡皮擦.png" Width="36"  />
+                        </Button>
+
+                    </DockPanel>
+                    <DockPanel  Margin="0,5,0,0" >
+                        <DockPanel.Resources>
+                            <Style TargetType="CheckBox">
+                                <Setter Property="FontFamily" Value="楷体"/>
+                                <Setter Property="FontSize" Value="16"/>
+                                <Setter Property="FontWeight" Value="Medium"/>
+                                <Setter Property="Foreground" Value="#E4F2FB"/>
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                <Setter Property="BorderBrush" Value="DarkGray"/>
+                                <Setter Property="Margin" Value="15,0,0,0"/>
+                            </Style>
+                        </DockPanel.Resources>
+                        <TextBlock Text="  修改" Margin="10,0,30,0" />
+                        <Button  Tag="Modify" HorizontalAlignment="Left">
+                            <Image Source="/Image/modify.png" />
+                        </Button>
+                        <CheckBox Name="cbColor"  Content="颜色" Margin="50,5,0,0"/>
+                        <CheckBox  Name="cbDia" Content="直径" IsChecked="True" Margin="5,5,0,0"/>
+                    </DockPanel>
+                    <DockPanel  Margin="0,5,0,0" >
+                        <TextBlock Text="  直径" Margin="10,0,20,0"/>
+                        <TextBox Width="50"  Height="25" Name="txtDia" Text="8"/>
+                        <TextBlock Text="颜色" Margin="20,0,0,0" />
+                        <pu:ColorPicker Name="clpk" Width="100"/>
+                    </DockPanel>
+
+                </StackPanel>
+                <StackPanel Grid.Row="1" VerticalAlignment="Center">
+                    <TextBlock  Text="探针操作" Margin="2,5,0,0" FontSize="18"/>
+                    <Separator Height="3"/>
+                    <DockPanel >
+                        <DockPanel.Resources>
+                            <Style TargetType="RadioButton">
+                                <Setter Property="FontFamily" Value="楷体"/>
+                                <Setter Property="FontSize" Value="16"/>
+                                <Setter Property="FontWeight" Value="Medium"/>
+                                <Setter Property="Foreground" Value="#E4F2FB"/>
+
+                                <Setter Property="BorderBrush" Value="DarkGray"/>
+                                <Setter Property="Margin" Value="10,0,10,0"/>
+                            </Style>
+
+                        </DockPanel.Resources>
+                        <StackPanel Margin="0,0,0,5"  Orientation="Horizontal" VerticalAlignment="Center"/>
+
+                    </DockPanel>
+                    <DockPanel Margin="0,5,0,10" >
+                        <TextBlock Text="循环时间(MS):"   Foreground="NavajoWhite"/>
+                        <TextBox Width="100" Height="25" Text="500"  Margin="10,0,0,0" ToolTip="间隔时间最小只能为500"
+                                 HorizontalAlignment="Left" Name="interval" />
+                    </DockPanel>
+                    <DockPanel Margin="5,0,0,0" DataContext="{Binding Source={StaticResource Locator},Path=Main}">
+                        <!--连接按钮-->
+                        <Button Command="{Binding Source={StaticResource Locator},Path=Main.Connect}"
+                                Background="{Binding Source={StaticResource Locator},Path=Main.IsConnected,Converter={StaticResource BoolToColor}}" 
+                                Content="{Binding Source={StaticResource Locator},Path=Main.IsConnected,Converter={StaticResource BoolToText}}"
+                                Style="{StaticResource btn1}"/>
+                        <!--循环按钮-->
+                        <Button Content="{Binding Source={StaticResource Locator},Path=ExcelPaper.IsCycle,Converter={StaticResource BoolToTextCycle}}"
+                                Background="{Binding Source={StaticResource Locator},Path=ExcelPaper.IsCycle,Converter={StaticResource BoolToColor}}" 
+                                Style="{StaticResource btn1}" 
+                                CommandParameter="{Binding ElementName=interval,Path=Text}"
+                                Command="{Binding Source={StaticResource Locator},Path=ExcelPaper.Cycle}"
+                                IsEnabled="{Binding  Source={StaticResource Locator},Path=Main.IsConnected}" />
+                    </DockPanel>
+                    <DockPanel Margin="5,0,0,0" VerticalAlignment="Bottom" DataContext="{Binding Source={StaticResource Locator},Path=Main}">
+                        <Button Content="清  空" Tag="clear" Style="{StaticResource btn1}" Click="Button_Click"/>
+                        <Button Content="手  动" 
+                                Style="{StaticResource btn1}" 
+                                IsEnabled="{Binding  Source={StaticResource Locator},Path=Main.IsConnected }"
+                                 Command="{Binding Source={StaticResource Locator},Path=ExcelPaper.Manual}"
+                                />
+                    </DockPanel>
+                </StackPanel>
+                <Grid Grid.Row="2" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30*"/>
+                        <RowDefinition Height="75*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.Resources>
+                        <Style TargetType="ListBoxItem">
+                            <Style.Triggers>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="Foreground" Value="Yellow" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Resources>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock  Text="探针数据:" FontSize="18" Margin="2,5,0,0" />
+                        <Separator Height="7" />
+                    </StackPanel>
+
+                    <ListView Name="txtProbe"  Background="Black"  Grid.Row="1" Margin="2" 
+                             ItemsSource="{Binding Source={StaticResource Locator},Path=ExcelPaper.Channels}">
+                       
+                    </ListView>
+                </Grid>
+
+                <!--<DockPanel VerticalAlignment="Top" Grid.Row="2" Height="136">
+                   
+                </DockPanel>-->
+
+
+
+            </Grid>
+            <!--底部数据栏-->
+            <DataGrid Name="paperdata"  Grid.Row="2" Grid.ColumnSpan="2"  SelectionChanged="DataGrid_SelectionChanged"
+                      AutoGenerateColumns="False" 
+                      CanUserAddRows="False"  
+                      pu:DataGridHelper.ColumnHorizontalContentAlignment="Center"
+                      ItemsSource="{Binding Source={StaticResource Locator},Path=ExcelPaper.Pins}">
+                <DataGrid.ContextMenu >
+                    <ContextMenu  >
+                        <MenuItem Header="删除" Click="MenuItem_Click_Delete" />
+                        <MenuItem Header="修改"  Click="MenuItem_Click_Modify" />
+                        <MenuItem Header="治具灯ON"  Click="MenuItem_Click_ON" />
+                        <MenuItem Header="治具灯OFF"  Click="MenuItem_Click_OFF" />
+                        <MenuItem Header="治具灯全ON"  Click="MenuItem_Click_AllON" />
+                    </ContextMenu>
+                </DataGrid.ContextMenu>
+                <DataGrid.Resources>
+                    <Style TargetType="DataGridColumnHeader" >
+                        <Setter Property="Background" Value="Gray"/>
+
+                        <Setter Property="HorizontalContentAlignment" Value="Center" />
+                        <Setter Property="FontFamily" Value="楷体"/>
+                        <Setter Property="FontSize" Value="20"/>
+                        <Setter Property="Foreground" Value="#E4F2FB"/>
+                    </Style>
+                </DataGrid.Resources>
+                <DataGrid.Columns>
+                    <DataGridTextColumn  Width="*" Header="插接件型号" Binding="{Binding FixtureType}"/>
+                    <DataGridTextColumn Width="*" Header="引脚编号" Binding="{Binding  PinNO}" IsReadOnly="True"/>
+                    <DataGridTextColumn Width="*" Header="物理地址" Binding="{Binding  PhysicalChannel}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+    </Grid>
+</Page>
