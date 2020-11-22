@@ -270,18 +270,19 @@ namespace WiringHarnessDetect.ViewModel
             get { return new RelayCommand(Initial); }
         }
 
-        public RelayCommand Print
-        {
-            get =>
+        public RelayCommand Print => new RelayCommand(() =>
+                                     {
+                                         if (labelInfo != null)
+                                         {
+                                             PrintLabel(jo["printCOM"].ToString(), labelInfo);
+                                             count = count++;
+                                             jo["Count"] = count + 1;
+                                             File.WriteAllText("Config/ServerInfo.json", JsonConvert.SerializeObject(jo));
 
-                new RelayCommand(() =>
-                {
-                    if(labelInfo!=null)
-                        PrintLabel(jo["printCOM"].ToString(),labelInfo);
-                }
+                                         }
+
+                                     }
                 );
-
-        }
         #endregion
 
         #region Method
@@ -879,9 +880,18 @@ namespace WiringHarnessDetect.ViewModel
                             labelInfo.WireName = (App.Current.Resources["Locator"] as ViewModelLocator).ExcelPassive.Wire.WireName;
                             labelInfo.Result = "合 格";
                             labelInfo.RunningNumber = DateTime.Now.ToString("yyyyMMdd") + (count + 1);
-                            jo["Count"] = count + 1;
-                            File.WriteAllText("Config/ServerInfo.json", JsonConvert.SerializeObject(jo));
+                           
 
+                        }
+                        else
+                        {
+                            labelInfo = new LabelInfo();
+                            labelInfo.OperatorNum = User.UserID;
+                            labelInfo.PartNum = (App.Current.Resources["Locator"] as ViewModelLocator).ExcelPassive.Part.PartType;
+                            labelInfo.WireName = (App.Current.Resources["Locator"] as ViewModelLocator).ExcelPassive.Wire.WireName;
+                            labelInfo.Result = "NG";
+                            labelInfo.RunningNumber = DateTime.Now.ToString("yyyyMMdd") + (count + 1);
+                          
                         }
                         App.Current.Dispatcher.Invoke(() =>
                         {
@@ -901,9 +911,7 @@ namespace WiringHarnessDetect.ViewModel
                         labelInfo.PartNum = (App.Current.Resources["Locator"] as ViewModelLocator).ExcelPassive.Part.PartType;
                         labelInfo.WireName = (App.Current.Resources["Locator"] as ViewModelLocator).ExcelPassive.Wire.WireName;
                         labelInfo.Result = "合 格";
-                        labelInfo.RunningNumber = DateTime.Now.ToString("yyyyMMdd") + (count + 1);
-                        jo["Count"] = count + 1;
-                        File.WriteAllText("Config/ServerInfo.json", JsonConvert.SerializeObject(jo));
+                       
                     }
 
                     

@@ -14,7 +14,7 @@
    
         pu:WindowXCaption.Height="0"  
         mc:Ignorable="d" WindowStartupLocation="CenterScreen"
-        Title="线束检测管理系统" Height="780" Width="1380" x:Name="mainWindow"
+        Title="线束检测管理系统" Height="800" Width="1380" x:Name="mainWindow"
       DataContext="{Binding Source={StaticResource Locator},Path=Main}">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
