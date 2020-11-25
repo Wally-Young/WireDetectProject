@@ -1,4 +1,4 @@
-﻿using Panuon.UI.Silver;
+using Panuon.UI.Silver;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -132,7 +132,7 @@ namespace WiringHarnessDetect.View.SubView
                     if (QualityCheck())
                     {
                         project.Author = (App.Current.Resources["Locator"] as ViewModelLocator).Main.User.UserID;
-                        ImportExcel(project.ProjectNO, project.ProjectName, filepath);
+                       bool rs=  ImportExcel(project.ProjectNO, project.ProjectName, filepath);
                         if(SQliteDbContext.GetAllExcelProject().Exists(x=>x.ProjectNO==project.ProjectNO))
                         {
                             MessageBox.Show("工程编号已经存在!", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -140,7 +140,7 @@ namespace WiringHarnessDetect.View.SubView
                             return;
                         }
                         int r = SQliteDbContext.AddExcelProject(project);
-                        if (r > 0)
+                        if (r > 0&&rs)
                         {
                             MessageBox.Show("添加成功!", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
 
@@ -222,12 +222,12 @@ namespace WiringHarnessDetect.View.SubView
         /// <summary>
         /// 导入Excel
         /// </summary>
-        private void ImportExcel(string projectNO, string ProjectName, string path)
+        private bool ImportExcel(string projectNO, string ProjectName, string path)
         {
             DataSet ds = null;
             System.Data.DataTable dt = null;
 
-            //try
+            try
             {
                 {
                     #region Part
@@ -292,7 +292,7 @@ namespace WiringHarnessDetect.View.SubView
                     ).ToList();
 
                     #endregion
-
+                    //
                     #region Connect 
                     string Sql3 = "select * from [sheet2$]";//这里sheet1对应excel的工作表名称，一定要注意。
                     myCommand = new OleDbDataAdapter(Sql3, strConn);
@@ -418,13 +418,16 @@ namespace WiringHarnessDetect.View.SubView
                     string sqlconn = "Insert into ExcelConnect(WireNum,CirCuitName,ProjectNO,FixtureNO,FixtureType,PinIndex,PinNO)Values(@WireNum,@CirCuitName,@ProjectNO,@FixtureNO,@FixtureType,@PinIndex,@PinNO)";
                     SQliteDbContext.MultiInsert<ConnectionInfo>(sqlconn, result);
                 }
+
+                return true;
             }
 
 
-          // catch (Exception ex)
+           catch (Exception ex)
             {
 
-              //  MessageBox.Show($"导入数据出错：{ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"导入数据出错：{ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
             }
            
         }
