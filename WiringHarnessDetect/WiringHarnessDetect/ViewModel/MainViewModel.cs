@@ -275,7 +275,7 @@ namespace WiringHarnessDetect.ViewModel
                                          if (labelInfo != null)
                                          {
                                              PrintLabel(jo["printCOM"].ToString(), labelInfo);
-                                             count = count++;
+                                             count = count+1;
                                              jo["Count"] = count + 1;
                                              File.WriteAllText("Config/ServerInfo.json", JsonConvert.SerializeObject(jo));
 
@@ -1565,7 +1565,8 @@ namespace WiringHarnessDetect.ViewModel
             // 字体浓度为8
             // 使用垂直間距感測器(gap sensor)
             // 两个标签之间的  间距为 3.5mm
-            TSCLIB_DLL.setup("40", "30", "4", "8", "0", "0", "0");
+           //TSCLIB_DLL.setup("40", "30", "4", "8", "0", "0", "0");
+            TSCLIB_DLL.setup("100", "150", "4", "8", "0", "0", "0");
             // 清除缓冲信息
             TSCLIB_DLL.clearbuffer();
             // 发送 TSPL 指令.
@@ -1579,12 +1580,21 @@ namespace WiringHarnessDetect.ViewModel
             // 文字没有下划线.
             // 字体为 黑体.
             // 打印的内容为：title
-            TSCLIB_DLL.windowsfont(5, 5, 20, 0, 2, 0, "宋体", $"线束名称:{labelInfo.WireName}");
-            TSCLIB_DLL.windowsfont(5, 35, 20, 0, 2, 0, "宋体", $"线束零件号:{labelInfo.PartNum}");
-            TSCLIB_DLL.windowsfont(5, 65, 20, 0, 2, 0, "宋体", $"检测日期:{labelInfo.DetectTime}");
-            TSCLIB_DLL.windowsfont(5, 95, 20, 0, 2, 0, "宋体", $"作业流水号:{labelInfo.RunningNumber}");
-            TSCLIB_DLL.windowsfont(5, 125, 20, 0, 2, 0, "宋体", $"检测员:{labelInfo.OperatorNum}");
-            TSCLIB_DLL.windowsfont(5, 155, 20, 0, 2, 0, "宋体", $"检测状态:{labelInfo.Result}");
+            TSCLIB_DLL.windowsfont(20, 20, 80, 0, 2, 0, "宋体", "SGWM");
+            TSCLIB_DLL.windowsfont(300, 20, 50, 0, 2, 0, "宋体", "线束测试结果");
+            TSCLIB_DLL.windowsfont(50, 50, 40, 0, 2, 0, "宋体", $"线束名称:{labelInfo.WireName}");
+            TSCLIB_DLL.windowsfont(50, 150, 40, 0, 2, 0, "宋体", $"线束零件号:{labelInfo.PartNum}");
+            TSCLIB_DLL.windowsfont(50, 250, 40, 0, 2, 0, "宋体", $"检测日期:{labelInfo.DetectTime}");
+            TSCLIB_DLL.windowsfont(50, 350, 40, 0, 2, 0, "宋体", $"作业流水号:{labelInfo.RunningNumber}");
+            TSCLIB_DLL.windowsfont(50, 450, 40, 0, 2, 0, "宋体", $"检测员:{labelInfo.OperatorNum}");
+            TSCLIB_DLL.windowsfont(50, 550, 40, 0, 2, 0, "宋体", $"检测状态:{labelInfo.Result}");
+
+            //TSCLIB_DLL.windowsfont(5, 5, 20, 0, 2, 0, "宋体", $"线束名称:{labelInfo.WireName}");
+            //TSCLIB_DLL.windowsfont(5, 35, 20, 0, 2, 0, "宋体", $"线束零件号:{labelInfo.PartNum}");
+            //TSCLIB_DLL.windowsfont(5, 65, 20, 0, 2, 0, "宋体", $"检测日期:{labelInfo.DetectTime}");
+            //TSCLIB_DLL.windowsfont(5, 95, 20, 0, 2, 0, "宋体", $"作业流水号:{labelInfo.RunningNumber}");
+            //TSCLIB_DLL.windowsfont(5, 125, 20, 0, 2, 0, "宋体", $"检测员:{labelInfo.OperatorNum}");
+            //TSCLIB_DLL.windowsfont(5, 155, 20, 0, 2, 0, "宋体", $"检测状态:{labelInfo.Result}");
             // 打印条码.
             // 在 (176, 66) 的坐标上
             // 以 Code39 的条码方式

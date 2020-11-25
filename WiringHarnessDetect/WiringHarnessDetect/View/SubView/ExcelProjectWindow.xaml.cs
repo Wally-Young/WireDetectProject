@@ -227,7 +227,7 @@ namespace WiringHarnessDetect.View.SubView
             DataSet ds = null;
             System.Data.DataTable dt = null;
 
-            try
+         //   try
             {
                 {
                     #region Part
@@ -259,7 +259,7 @@ namespace WiringHarnessDetect.View.SubView
                         if (SQliteDbContext.CheckPartNameExist(item))
                         {
                             System.Windows.MessageBox.Show($"{item}型号已经存在,请删除该零件新后再导入", "警告", MessageBoxButton.OK, MessageBoxImage.Warning);
-                            return;
+                            return false;
                         }
                     }
 
@@ -276,16 +276,16 @@ namespace WiringHarnessDetect.View.SubView
                     if (dt.Columns.Count < 5)
                     {
                         System.Windows.MessageBox.Show($"Sheet3缺少列,请检测列信息是否完成", "警告", MessageBoxButton.OK, MessageBoxImage.Warning);
-                        return;
+                        return false;
                     }
-                    var fixtures = dt.Rows.Cast<DataRow>().Where(x => x.ItemArray[0].ToString().Trim().Length > 0).Select(r => new FixtureInfo
+                    var fixtures = dt.Rows.Cast<DataRow>().Where(x => x.ItemArray[1].ToString().Trim().Length > 0).Select(r => new FixtureInfo
                     {
                         ProjectNO = projectNO,
-                        FixtureType = r[0].ToString().Trim(),
-                        PinNO = r[1].ToString().Trim(),
-                        FixtureNO = r[3].ToString().Trim(),
+                        FixtureType = r[1].ToString().Trim(),
+                        PinNO = r[2].ToString().Trim(),
+                        FixtureNO = r[4].ToString().Trim(),
                        // PhysicalChannel = r[2].ToString().Trim().Length == 0 ? 0 : Convert.ToInt32(r[1].ToString()),
-                        PinIndex = Convert.ToInt32(r[4].ToString()),
+                        PinIndex = Convert.ToInt32(r[5].ToString()),
 
 
                     }
@@ -362,7 +362,7 @@ namespace WiringHarnessDetect.View.SubView
                         if (patter.Text.Trim().Length == 0)
                         {
                             MessageBox.Show("请输入需要匹配的合点字母", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
-                            return;
+                            return false;
                         }
                         result = ctlst.SelectMany(p => p.Pins, (p, r) => new ConnectionInfo
                         {
@@ -423,11 +423,11 @@ namespace WiringHarnessDetect.View.SubView
             }
 
 
-           catch (Exception ex)
+         //  catch (Exception ex)
             {
 
-                MessageBox.Show($"导入数据出错：{ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
-                return false;
+              //  MessageBox.Show($"导入数据出错：{ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+              //  return false;
             }
            
         }

@@ -1,6 +1,8 @@
 {
   "ExpandedNodes": [
-    "\\WiringHarnessDetect"
+    "",
+    "\\WiringHarnessDetect",
+    "\\WiringHarnessDetect\\WiringHarnessDetect"
   ],
   "PreviewInSolutionExplorer": false
 }
