@@ -379,9 +379,17 @@ namespace WiringHarnessDetect.View.SubView
                     result.ForEach(x =>
                     {
                         var rs = fixtures.ToList().Find(r => r.FixtureNO == x.FixtureNO && r.PinIndex == x.PinIndex);
-                        x.PhysicalChannel = rs.PhysicalChannel;
-                        x.FixtureType = rs.FixtureType;
-                        x.PinNO = rs.PinNO;
+                        if(rs!=null)
+                        {
+                            x.PhysicalChannel = rs.PhysicalChannel;
+                            x.FixtureType = rs.FixtureType;
+                            x.PinNO = rs.PinNO;
+                        }
+                        else
+                        {
+                            MessageBox.Show($"导入数据出错:{x.FixtureNO}-{x.PinIndex}在表3中不存在！", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                       
 
                     }
                     );
