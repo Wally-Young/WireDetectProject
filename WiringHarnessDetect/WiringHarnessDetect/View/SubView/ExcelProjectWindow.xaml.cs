@@ -139,13 +139,17 @@ namespace WiringHarnessDetect.View.SubView
                             this.projectNO.Focus();
                             return;
                         }
-                        int r = SQliteDbContext.AddExcelProject(project);
-                        if (r > 0&&rs)
+                        if(rs)
                         {
-                            MessageBox.Show("添加成功!", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
+                            int r = SQliteDbContext.AddExcelProject(project);
+                            if (r > 0 && rs)
+                            {
+                                MessageBox.Show("添加成功!", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
 
-                            this.Close();
+                                this.Close();
+                            }
                         }
+                           
                     }
 
                 }
@@ -227,7 +231,7 @@ namespace WiringHarnessDetect.View.SubView
             DataSet ds = null;
             System.Data.DataTable dt = null;
 
-         //   try
+            try
             {
                 {
                     #region Part
@@ -245,7 +249,7 @@ namespace WiringHarnessDetect.View.SubView
                     {
                         for (int i = 1; i < dt.Columns.Count - 1; i++)
                         {
-                            if (dr[i].ToString() != ""&&dr[i].ToString().Trim().Length>0)
+                            if (dr[i].ToString().Trim().Length >0&&dr[i].ToString().Trim().Length>0)
                             {
                                 Part part = new Part() { PartType = dr[0].ToString().Trim(), ProjectNO = projectNO, Circuit = dt.Columns[i].ToString().Trim() };
                                 projects.Add(part);
@@ -275,7 +279,45 @@ namespace WiringHarnessDetect.View.SubView
                     dt = ds.Tables[0];
                     if (dt.Columns.Count < 5)
                     {
-                        System.Windows.MessageBox.Show($"Sheet3缺少列,请检测列信息是否完成", "警告", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        System.Windows.MessageBox.Show($"Sheet3缺少列,列数必须为6列，包括第一列的空白列,请检测列信息是否完成", "警告", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        return false;
+                    }
+
+                    bool IsChecked = true;
+                    int index3 = 0;
+                    dt.Rows.Cast<DataRow>().Where(x => x.ItemArray[1].ToString().Trim().Length > 0).ToList().ForEach(r =>
+                    {
+                        index3++;
+                        if(r[2].ToString().Trim().Length==0)
+                        {
+                            IsChecked = false;
+                            MessageBox.Show($"模型编号不能为空,在sheet3中{index3+1}行", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                        int pinindex = 0;
+                        if (!int.TryParse(r[2].ToString().Trim(), out pinindex))
+                        {
+                            IsChecked = false;
+                            MessageBox.Show($"模型编号必须为数字,在sheet3中{index3 + 1}行", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                        if (r[4].ToString().Trim().Length == 0)
+                        {
+                            IsChecked = false;
+                            MessageBox.Show($"插接件编号不能为空,在sheet3中{index3 + 1}行", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                        if (r[5].ToString().Trim().Length == 0)
+                        {
+                            IsChecked = false;
+                            MessageBox.Show($"Pin编号不能为空,在sheet3中{index3 + 1}行", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                        if (!int.TryParse(r[5].ToString().Trim(), out pinindex))
+                        {
+                            IsChecked = false;
+                            MessageBox.Show($"Pin编号必须为数字,在sheet3中{index3 + 1}行", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                    });
+                    if(!IsChecked)
+                    {
+                        MessageBox.Show($"导入数据出错！", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
                         return false;
                     }
                     var fixtures = dt.Rows.Cast<DataRow>().Where(x => x.ItemArray[1].ToString().Trim().Length > 0).Select(r => new FixtureInfo
@@ -291,6 +333,7 @@ namespace WiringHarnessDetect.View.SubView
                     }
                     ).ToList();
 
+                    
                     #endregion
                     //
                     #region Connect 
@@ -300,7 +343,64 @@ namespace WiringHarnessDetect.View.SubView
                     myCommand.Fill(ds, "table1");
                     dt = ds.Tables[0];
 
-                    var data = dt.AsEnumerable().ToList().Select(x => new WireConnect()
+                    if (dt.Columns.Count < 7)
+                    {
+                        System.Windows.MessageBox.Show($"Sheet2缺少列,列数必须为7列，包括第一列的序号列,请检测列信息是否完成", "警告", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        return false;
+                    }
+                    int index2 = 0;
+                    dt.AsEnumerable().Where(x => x[0].ToString().Trim().Length > 0).ToList().ForEach(r =>
+                    {
+                        index2++;
+                        if (r[1].ToString().Trim().Length == 0)
+                        {
+                            IsChecked = false;
+                            MessageBox.Show($"Wire不能为空,在sheet2中{index2+1}行", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                        int pinindex = 0;
+                        if (r[2].ToString().Trim().Length == 0)
+                        {
+                            IsChecked = false;
+                            MessageBox.Show($"Option不能为空,在sheet2中{index2+1}行", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                        if (r[3].ToString().Trim().Length == 0)
+                        {
+                            IsChecked = false;
+                            MessageBox.Show($"From不能为空,在sheet2中{index2 + 1}行", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                        if (r[4].ToString().Trim().Length == 0)
+                        {
+                            IsChecked = false;
+                            MessageBox.Show($"From-Pin不能为空,在sheet2中{index2 + 1}行", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                        if (!int.TryParse(r[4].ToString().Trim(), out pinindex))
+                        {
+                            IsChecked = false;
+                            MessageBox.Show("FromPin编号必须为数字", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                        if (r[5].ToString().Trim().Length == 0)
+                        {
+                            IsChecked = false;
+                            MessageBox.Show($"To不能为空,在sheet2中{index2 + 1}行", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+
+                        if (r[6].ToString().Trim().Length == 0)
+                        {
+                            IsChecked = false;
+                            MessageBox.Show($"To-Pin不能为空,在sheet2中{index2 + 1}行", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                        if (!int.TryParse(r[6].ToString().Trim(), out pinindex))
+                        {
+                            IsChecked = false;
+                            MessageBox.Show("ToPin编号必须为数字", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                    });
+                    if (!IsChecked)
+                    {
+                        MessageBox.Show($"导入数据出错！", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return false;
+                    }
+                    var data = dt.AsEnumerable().Where(x=>x[0].ToString().Trim().Length>0).ToList().Select(x => new WireConnect()
                     {
                         Wire = x[1].ToString().Trim(),
                         Option = x[2].ToString().Trim(),
@@ -413,29 +513,46 @@ namespace WiringHarnessDetect.View.SubView
                     #endregion
 
 
-
+                    Dictionary<string, object> dict = new Dictionary<string, object>();
 
                     //实体线束（零件图号）
                     string sql = "Insert into ExcelPart(ProjectNO,PartType,Circuit)Values(@ProjectNO,@PartType,@Circuit)";
-                    SQliteDbContext.MultiInsert<Part>(sql, projects);
+                    dict.Add(sql, projects);
+                    
+                    int row1= SQliteDbContext.MultiInsert<Part>(sql, projects);
+                    if(row1==0)
+                    {
+                        MessageBox.Show($"导入数据出错,插入数据库失败！", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return false;
+                    }
                     //治具信息
                     string sqlFixtureAdd = "Insert into ExcelFixturePinInfo(ProjectNO,FixtureType,FixtureNO,PinNO, PinIndex)Values(@ProjectNO,@FixtureType,@FixtureNO,@PinNO,@PinIndex)";
-                    SQliteDbContext.MultiInsert<FixtureInfo>(sqlFixtureAdd, fixtures);
-
+                    int row2= SQliteDbContext.MultiInsert<FixtureInfo>(sqlFixtureAdd, fixtures);
+                    if (row2 == 0)
+                    {
+                        MessageBox.Show($"导入数据出错,插入数据库失败！", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return false;
+                    }
                     //连接点
                     string sqlconn = "Insert into ExcelConnect(WireNum,CirCuitName,ProjectNO,FixtureNO,FixtureType,PinIndex,PinNO)Values(@WireNum,@CirCuitName,@ProjectNO,@FixtureNO,@FixtureType,@PinIndex,@PinNO)";
-                    SQliteDbContext.MultiInsert<ConnectionInfo>(sqlconn, result);
+                    int row3=SQliteDbContext.MultiInsert<ConnectionInfo>(sqlconn, result);
+                    if (row3 == 0)
+                    {
+                        MessageBox.Show($"导入数据出错,插入数据库失败！", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return false;
+                    }
+
                 }
 
                 return true;
             }
 
 
-         //  catch (Exception ex)
+            catch (Exception ex)
             {
 
-              //  MessageBox.Show($"导入数据出错：{ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
-              //  return false;
+                MessageBox.Show($"导入数据出错：{ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
             }
            
         }

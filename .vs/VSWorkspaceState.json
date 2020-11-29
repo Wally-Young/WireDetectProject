@@ -2,7 +2,8 @@
   "ExpandedNodes": [
     "",
     "\\WiringHarnessDetect",
-    "\\WiringHarnessDetect\\WiringHarnessDetect"
+    "\\WiringHarnessDetect\\WiringHarnessDetect",
+    "\\WiringHarnessDetect\\WiringHarnessDetect\\View\\SubView"
   ],
   "PreviewInSolutionExplorer": false
 }

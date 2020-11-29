@@ -455,13 +455,50 @@ namespace WiringHarnessDetect
             {
                 cnn.Open();
                 var tran = cnn.BeginTransaction();
-                int rows = cnn.Execute(sql, list, tran);
-                tran.Commit();
+                int rows = 0;
+                try
+                {
+                    rows = cnn.Execute(sql, list, tran);
+                    tran.Commit();
+                }
+                catch (Exception ex)
+                {
+
+                    tran.Rollback();
+                    throw ex;
+                }
+              
+               
                 return rows;
             }
         }
 
-       
+        public static int MultiInsert(Dictionary<string,object>dict)
+        {
+            using (IDbConnection cnn = new SQLiteConnection(LoadConnectString()))
+            {
+                cnn.Open();
+                var tran = cnn.BeginTransaction();
+                int rows = 0;
+                try
+                {
+                    foreach (var item in dict)
+                    {
+                        rows = cnn.Execute(item.Key, item.Value, tran);
+                        tran.Commit();
+                    }
+                  
+                }
+                catch (Exception ex)
+                {
+                    rows = 0;
+                    tran.Rollback();
+                }
+
+
+                return rows;
+            }
+        }
 
         #region Excel 
 
