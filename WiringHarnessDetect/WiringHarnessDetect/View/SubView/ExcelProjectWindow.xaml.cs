@@ -431,18 +431,36 @@ namespace WiringHarnessDetect.View.SubView
                         }
                     }
 
-                    //将From to 拆分成单个的两个归属到治具里
-                    var ctlst = data.Select(r => new ConnectInfoEx
+                    List<ConnectInfoEx> ctlst = new List<ConnectInfoEx>();
+                    foreach (var item in wireConnects)
                     {
-                        ProjectNO = projectNO,
-                        WireNum = r.Num.Trim(),
-                        CirCuitName=r.Option.Trim(),
-                        Pins=new List<BasePin>()
+                        foreach (var subitem in item)
                         {
-                            new BasePin() { PinIndex = Convert.ToInt32(r.FromPin.ToString().Trim()), FixtureNO = r.From.ToString().Trim()},
-                            new BasePin() { PinIndex = Convert.ToInt32(r.ToPin.ToString().Trim()), FixtureNO = r.To.ToString().Trim()},
+                            ctlst.Add(new ConnectInfoEx
+                            {
+                                ProjectNO = projectNO,
+                                WireNum = subitem.Num.Trim(),
+                                CirCuitName = subitem.Option.Trim(),
+                                Pins = new List<BasePin>()
+                        {
+                            new BasePin() { PinIndex = Convert.ToInt32(subitem.FromPin.ToString().Trim()), FixtureNO = subitem.From.ToString().Trim()},
+                            new BasePin() { PinIndex = Convert.ToInt32(subitem.ToPin.ToString().Trim()), FixtureNO = subitem.To.ToString().Trim()},
                         }
-                    });
+                            });
+                        }
+                    }
+                    ////将From to 拆分成单个的两个归属到治具里
+                    //var ctlst = wireConnects.Select(r => new ConnectInfoEx
+                    //{
+                    //    ProjectNO = projectNO,
+                    //    WireNum = r.Num.Trim(),
+                    //    CirCuitName=r.Option.Trim(),
+                    //    Pins=new List<BasePin>()
+                    //    {
+                    //        new BasePin() { PinIndex = Convert.ToInt32(r.FromPin.ToString().Trim()), FixtureNO = r.From.ToString().Trim()},
+                    //        new BasePin() { PinIndex = Convert.ToInt32(r.ToPin.ToString().Trim()), FixtureNO = r.To.ToString().Trim()},
+                    //    }
+                    //});
 
                     //筛选出合并点的信息
                     List<ConnectionInfo> result = new List<ConnectionInfo>();
@@ -590,20 +608,7 @@ namespace WiringHarnessDetect.View.SubView
             {
                 WireConnect wire = obj as WireConnect;
                 bool isTrue = false;
-                if (Regex.IsMatch(To, "^[A-Za-z]?"))
-                {
-                    if ((To == wire.To && ToPin == wire.ToPin) || (To == wire.From && ToPin == wire.FromPin))
-                        return isTrue = true;
-                    else
-                        isTrue = false;
-                }
-                if (Regex.IsMatch(From, "^[A-Za-z]?"))
-                {
-                    if ((From == wire.To && FromPin == wire.ToPin) || (From == wire.From && FromPin == wire.FromPin))
-                        return isTrue = true;
-                    else
-                        isTrue = false;
-                }
+
                 if (Regex.IsMatch(From, "^[A-Za-z]{3}"))
                 {
                     if (From == wire.From || From == wire.To)
@@ -611,14 +616,30 @@ namespace WiringHarnessDetect.View.SubView
                     else
                         isTrue = false;
                 }
-                if (Regex.IsMatch(To, "^[A-Za-z]{3}"))
+                else if (Regex.IsMatch(To, "^[A-Za-z]{3}"))
                 {
                     if (To == wire.From || To == wire.To)
                         return isTrue = true;
                     else
                         isTrue = false;
-                }
 
+                }
+                else
+                {
+
+
+                    if ((To == wire.To && ToPin == wire.ToPin) || (To == wire.From && ToPin == wire.FromPin))
+                        return isTrue = true;
+                    else
+                        isTrue = false;
+
+
+                    if ((From == wire.To && FromPin == wire.ToPin) || (From == wire.From && FromPin == wire.FromPin))
+                        return isTrue = true;
+                    else
+                        isTrue = false;
+
+                }
                 return isTrue;
 
             }

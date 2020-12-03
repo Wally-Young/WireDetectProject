@@ -3,7 +3,10 @@
     "",
     "\\WiringHarnessDetect",
     "\\WiringHarnessDetect\\WiringHarnessDetect",
+    "\\WiringHarnessDetect\\WiringHarnessDetect\\Common",
+    "\\WiringHarnessDetect\\WiringHarnessDetect\\View",
     "\\WiringHarnessDetect\\WiringHarnessDetect\\View\\SubView"
   ],
+  "SelectedNode": "\\WiringHarnessDetect\\WiringHarnessDetect\\View\\SubView\\ExcelProjectWindow.xaml.cs",
   "PreviewInSolutionExplorer": false
 }
